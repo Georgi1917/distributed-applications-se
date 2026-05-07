@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("user/")
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> GetUser(@PathVariable int id)
+    public CompletableFuture<Optional<User>> GetUser(@PathVariable int id)
     {
 
         return _service.GetUser(id);
@@ -30,13 +31,29 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public User SaveUser(@RequestBody User user)
+    public CompletableFuture<User> SaveUser(@RequestBody User user)
     {
 
         System.out.println(user.Email);
         System.out.println(user.Username);
         System.out.println(user.Password);
         return _service.Save(user);
+
+    }
+
+    @PutMapping("/update/{id}")
+    public CompletableFuture<Optional<User>> UpdateUser(@PathVariable int id, @RequestBody User user)
+    {
+
+        return _service.Update(id, user);
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public CompletableFuture<Optional<User>> DeleteUser(@PathVariable int id)
+    {
+
+        return _service.Delete(id);
 
     }
 

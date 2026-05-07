@@ -2,9 +2,11 @@ package com.example.JobListing.Service;
 
 import com.example.JobListing.Entities.User;
 import com.example.JobListing.Repository.UserRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserService {
@@ -18,17 +20,53 @@ public class UserService {
 
     }
 
-    public Optional<User> GetUser(Integer id)
+    @Async
+    public CompletableFuture<Optional<User>> GetUser(Integer id)
     {
 
-        return _repository.findById(id);
+        Optional<User> user = _repository.findById(id);
+
+        return CompletableFuture.completedFuture(user);
 
     }
 
-    public User Save(User user)
+    @Async
+    public CompletableFuture<User> Save(User user)
     {
 
-        return _repository.save(user);
+        User saved_user = _repository.save(user);
+
+        return CompletableFuture.completedFuture(saved_user);
+
+    }
+
+    @Async
+    public CompletableFuture<Optional<User>> Delete(int id)
+    {
+
+        Optional<User> to_delete = _repository.findById(id);
+
+        to_delete.ifPresent(_repository::delete);
+
+        return CompletableFuture.completedFuture(to_delete);
+
+    }
+
+    @Async
+    public CompletableFuture<Optional<User>> Update(int id, User user)
+    {
+
+        Optional<User> to_update = _repository.findById(id);
+
+        to_update.ifPresent(u -> {
+            u.Username = user.Username;
+            u.Email = user.Email;
+            u.Password = user.Password;
+        });
+
+        to_update.ifPresent(_repository::save);
+
+        return CompletableFuture.completedFuture(to_update);
 
     }
 
