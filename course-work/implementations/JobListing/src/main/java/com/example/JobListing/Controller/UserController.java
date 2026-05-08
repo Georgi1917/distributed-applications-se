@@ -1,12 +1,8 @@
 package com.example.JobListing.Controller;
 
 import com.example.JobListing.Entities.User;
-import com.example.JobListing.Service.UserService;
-import org.hibernate.service.spi.InjectService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.example.JobListing.Service.Implementation.UserService;
 import org.springframework.web.bind.annotation.*;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -26,7 +22,7 @@ public class UserController {
     public CompletableFuture<Optional<User>> GetUser(@PathVariable int id)
     {
 
-        return _service.GetUser(id);
+        return _service.GetItem(id);
 
     }
 
