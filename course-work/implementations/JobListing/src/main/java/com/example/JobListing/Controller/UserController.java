@@ -1,6 +1,7 @@
 package com.example.JobListing.Controller;
 
 import com.example.JobListing.Entities.User;
+import com.example.JobListing.Infrastructure.RequestDTOs.RegisterDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,15 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public CompletableFuture<User> SaveUser(@RequestBody User user)
+    public CompletableFuture<User> SaveUser(@RequestBody RegisterDTO user)
     {
 
-        System.out.println(user.Email);
-        System.out.println(user.Username);
-        System.out.println(user.Password);
-        return _service.Save(user);
+        User entity = new User();
+        entity.Username = user.Username;
+        entity.Email = user.Email;
+        entity.Password = user.Password;
+
+        return _service.Save(entity);
 
     }
 
