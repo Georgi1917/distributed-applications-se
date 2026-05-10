@@ -4,6 +4,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public CompletableFuture<UserResponseDTO> SaveUser(@RequestBody RegisterDTO user)
+    public CompletableFuture<UserResponseDTO> SaveUser(@Valid @RequestBody RegisterDTO user)
     {
 
         return _service.SaveUser(user);
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public CompletableFuture<UserResponseDTO> UpdateUser(@PathVariable int id, @RequestBody UpdateDTO entity)
+    public CompletableFuture<UserResponseDTO> UpdateUser(@PathVariable int id, @Valid @RequestBody UpdateDTO entity)
     {
 
         return _service.UpdateUser(id, entity);
