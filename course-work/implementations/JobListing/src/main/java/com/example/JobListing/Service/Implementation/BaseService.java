@@ -1,12 +1,10 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.BaseEntity;
-import com.example.JobListing.Entities.User;
 import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.IService;
 import org.springframework.scheduling.annotation.Async;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class BaseService<T extends BaseEntity> implements IService<T>
@@ -22,10 +20,10 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     }
 
     @Async
-    public CompletableFuture<Optional<T>> GetItem(Integer id)
+    public CompletableFuture<T> GetItem(Integer id)
     {
 
-        Optional<T> item = _repository.findById(id);
+        T item = _repository.findById(id).orElseThrow();
 
         return CompletableFuture.completedFuture(item);
 
@@ -42,30 +40,25 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     }
 
     @Async
-    public CompletableFuture<Optional<T>> Delete(int id)
+    public CompletableFuture<T> Delete(int id)
     {
 
-        Optional<T> to_delete = _repository.findById(id);
+        T to_delete = _repository.findById(id).orElseThrow();
 
-        to_delete.ifPresent(_repository::delete);
+        _repository.delete(to_delete);
 
         return CompletableFuture.completedFuture(to_delete);
 
     }
 
     @Async
-    public CompletableFuture<Optional<T>> Update(int id, T entity)
+    public CompletableFuture<T> Update(int id, T entity)
     {
 
-        Optional<T> existing_entity = _repository.findById(id);
+        T existing_entity = _repository.findById(id).orElseThrow();
 
-        existing_entity.ifPresent(t ->
-            {
-                UpdateEntity(t, entity);
-                _repository.save(existing_entity.get());
-            }
-        );
-
+        UpdateEntity(existing_entity, entity);
+        _repository.save(existing_entity);
 
         return CompletableFuture.completedFuture(existing_entity);
 
