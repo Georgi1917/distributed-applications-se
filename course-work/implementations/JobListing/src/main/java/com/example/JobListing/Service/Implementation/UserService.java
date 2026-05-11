@@ -5,6 +5,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.UserRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class UserService extends BaseService<User>
 
     }
 
+    @Async
     public CompletableFuture<UserResponseDTO> GetUser(int id)
     {
 
@@ -37,6 +39,7 @@ public class UserService extends BaseService<User>
 
     }
 
+    @Async
     public CompletableFuture<UserResponseDTO> SaveUser(RegisterDTO entity)
     {
 
@@ -54,6 +57,7 @@ public class UserService extends BaseService<User>
 
     }
 
+    @Async
     public CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity)
     {
 
@@ -72,6 +76,7 @@ public class UserService extends BaseService<User>
 
     }
 
+    @Async
     public CompletableFuture<UserResponseDTO> DeleteUser(int id)
     {
 

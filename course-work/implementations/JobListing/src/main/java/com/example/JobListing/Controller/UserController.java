@@ -5,6 +5,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @Async
     public CompletableFuture<UserResponseDTO> GetUser(@PathVariable int id)
     {
 
@@ -29,6 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/")
+    @Async
     public CompletableFuture<UserResponseDTO> SaveUser(@Valid @RequestBody RegisterDTO user)
     {
 
@@ -37,6 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
+    @Async
     public CompletableFuture<UserResponseDTO> UpdateUser(@PathVariable int id, @Valid @RequestBody UpdateDTO entity)
     {
 
@@ -45,6 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Async
     public CompletableFuture<UserResponseDTO> DeleteUser(@PathVariable int id)
     {
 
