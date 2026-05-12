@@ -6,6 +6,7 @@ import com.example.JobListing.Service.Implementation.CompanyService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -19,6 +20,15 @@ public class CompanyController
     {
 
         _service = service;
+
+    }
+
+    @GetMapping("/")
+    @Async
+    public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies()
+    {
+
+        return _service.GetAllCompanies();
 
     }
 

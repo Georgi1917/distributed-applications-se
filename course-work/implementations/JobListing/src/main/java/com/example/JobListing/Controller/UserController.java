@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -19,6 +20,15 @@ public class UserController {
     public UserController(UserService service)
     {
         _service = service;
+    }
+
+    @GetMapping("/")
+    @Async
+    public CompletableFuture<List<UserResponseDTO>> GetAllUsers()
+    {
+
+        return _service.GetAllUsers();
+
     }
 
     @GetMapping("/{id}")

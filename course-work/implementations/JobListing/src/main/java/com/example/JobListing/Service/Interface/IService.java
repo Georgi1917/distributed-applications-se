@@ -3,11 +3,14 @@ package com.example.JobListing.Service.Interface;
 import com.example.JobListing.Entities.BaseEntity;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface IService<T extends BaseEntity>
 {
 
+    @Async
+    public CompletableFuture<List<T>> GetAll();
     @Async
     public CompletableFuture<T> GetItem(Integer id);
     @Async

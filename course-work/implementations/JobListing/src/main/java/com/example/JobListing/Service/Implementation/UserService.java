@@ -3,16 +3,19 @@ package com.example.JobListing.Service.Implementation;
 import com.example.JobListing.Entities.User;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
+import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.UserRepository;
+import com.example.JobListing.Service.Interface.IUserService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class UserService extends BaseService<User>
+public class UserService extends BaseService<User> implements IUserService
 {
 
     private final PasswordEncoder _encoder;
@@ -22,6 +25,23 @@ public class UserService extends BaseService<User>
 
         super(repository);
         _encoder = encoder;
+
+    }
+
+    @Async
+    public CompletableFuture<List<UserResponseDTO>> GetAllUsers()
+    {
+
+        CompletableFuture<List<User>> future = super.GetAll();
+        List<User> items = future.join();
+
+        return CompletableFuture.completedFuture(items.stream()
+                                            .map(item ->
+                                                UserResponseDTO.builder()
+                                                .Id(item.getId())
+                                                .Username(item.getUsername())
+                                                .Email(item.getEmail()).build()
+                                                ).toList());
 
     }
 

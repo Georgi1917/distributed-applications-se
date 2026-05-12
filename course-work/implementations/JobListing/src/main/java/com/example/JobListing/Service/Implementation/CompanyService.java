@@ -6,19 +6,41 @@ import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequ
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
 import com.example.JobListing.Repository.IBaseRepository;
+import com.example.JobListing.Service.Interface.ICompanyService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class CompanyService extends BaseService<Company>
+public class CompanyService extends BaseService<Company> implements ICompanyService
 {
 
     public CompanyService(CompanyRepository repository)
     {
 
         super(repository);
+
+    }
+
+    @Async
+    public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies()
+    {
+
+        CompletableFuture<List<Company>> future = super.GetAll();
+        List<Company> items = future.join();
+
+        return CompletableFuture.completedFuture(items.stream()
+                                            .map(item -> CompanyResponseDTO.builder()
+                                                    .Id(item.getId())
+                                                    .CompanyName(item.getCompanyName())
+                                                    .Description(item.getDescription())
+                                                    .EmployeeCount(item.getEmployeeCount())
+                                                    .Type(item.getType())
+                                                    .RemotePolicy(item.getRemotePolicy())
+                                                    .IsHiring(item.isIsHiring()).build()).toList()
+                                            );
 
     }
 

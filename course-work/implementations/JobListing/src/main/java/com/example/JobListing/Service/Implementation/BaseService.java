@@ -5,6 +5,7 @@ import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.IService;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class BaseService<T extends BaseEntity> implements IService<T>
@@ -16,6 +17,14 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     {
 
         _repository = repository;
+
+    }
+
+    @Async
+    public CompletableFuture<List<T>> GetAll()
+    {
+
+        return CompletableFuture.completedFuture((List<T>) _repository.findAll());
 
     }
 
