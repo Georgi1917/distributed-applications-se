@@ -2,8 +2,13 @@ package com.example.JobListing.Entities;
 
 import com.example.JobListing.Entities.Enums.CompanyType;
 import com.example.JobListing.Entities.Enums.RemotePolicy;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,5 +25,12 @@ public class Company extends BaseEntity
     private CompanyType Type;
     private RemotePolicy RemotePolicy;
     private boolean IsHiring;
+
+    @OneToMany(
+            mappedBy = "Company",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<JobListing> JobListings = new ArrayList<>();
 
 }
