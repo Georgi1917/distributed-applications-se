@@ -1,7 +1,7 @@
 package com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs;
 
 import com.example.JobListing.Entities.Enums.CompanyType;
-import com.example.JobListing.Entities.Enums.RemotePolicy;
+import com.example.JobListing.Entities.Enums.CompanyRemotePolicy;
 import lombok.Builder;
 
 @Builder
@@ -11,7 +11,7 @@ public record CompanyRequestDTO
             String Description,
             Integer EmployeeCount,
             CompanyType Type,
-            RemotePolicy RemotePolicy,
+            CompanyRemotePolicy CompanyRemotePolicy,
             boolean IsHiring
         )
 { }

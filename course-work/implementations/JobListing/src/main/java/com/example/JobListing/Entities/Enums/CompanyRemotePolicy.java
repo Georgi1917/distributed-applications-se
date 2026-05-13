@@ -1,6 +1,6 @@
 package com.example.JobListing.Entities.Enums;
 
-public enum RemotePolicy
+public enum CompanyRemotePolicy
 {
 
     OFFICE,

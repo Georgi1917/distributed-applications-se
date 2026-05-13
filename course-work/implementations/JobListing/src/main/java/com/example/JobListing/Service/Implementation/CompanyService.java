@@ -1,11 +1,9 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.Company;
-import com.example.JobListing.Entities.User;
 import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
-import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.ICompanyService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -38,7 +36,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                                                     .Description(item.getDescription())
                                                     .EmployeeCount(item.getEmployeeCount())
                                                     .Type(item.getType())
-                                                    .RemotePolicy(item.getRemotePolicy())
+                                                    .CompanyRemotePolicy(item.getCompanyRemotePolicy())
                                                     .IsHiring(item.isIsHiring()).build()).toList()
                                             );
 
@@ -57,7 +55,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                 .Description(company.getDescription())
                 .EmployeeCount(company.getEmployeeCount())
                 .Type(company.getType())
-                .RemotePolicy(company.getRemotePolicy())
+                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
                 .IsHiring(company.isIsHiring()).build());
 
     }
@@ -71,7 +69,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                                 .Description(entity.Description())
                                 .EmployeeCount(entity.EmployeeCount())
                                 .Type(entity.Type())
-                                .RemotePolicy(entity.RemotePolicy())
+                                .CompanyRemotePolicy(entity.CompanyRemotePolicy())
                                 .IsHiring(entity.IsHiring()).build();
 
         super.Save(company);
@@ -82,7 +80,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                 .Description(company.getDescription())
                 .EmployeeCount(company.getEmployeeCount())
                 .Type(company.getType())
-                .RemotePolicy(company.getRemotePolicy())
+                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
                 .IsHiring(company.isIsHiring()).build());
 
     }
@@ -98,7 +96,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
         company.setDescription(entity.Description());
         company.setEmployeeCount(entity.EmployeeCount());
         company.setType(entity.Type());
-        company.setRemotePolicy(entity.RemotePolicy());
+        company.setCompanyRemotePolicy(entity.CompanyRemotePolicy());
         company.setIsHiring(entity.IsHiring());
 
         super.Save(company);
@@ -109,7 +107,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                 .Description(company.getDescription())
                 .EmployeeCount(company.getEmployeeCount())
                 .Type(company.getType())
-                .RemotePolicy(company.getRemotePolicy())
+                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
                 .IsHiring(company.isIsHiring()).build());
 
     }
@@ -127,7 +125,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                 .Description(company.getDescription())
                 .EmployeeCount(company.getEmployeeCount())
                 .Type(company.getType())
-                .RemotePolicy(company.getRemotePolicy())
+                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
                 .IsHiring(company.isIsHiring()).build());
 
     }

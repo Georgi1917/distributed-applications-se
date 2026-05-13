@@ -1,7 +1,7 @@
 package com.example.JobListing.Entities;
 
 import com.example.JobListing.Entities.Enums.CompanyType;
-import com.example.JobListing.Entities.Enums.RemotePolicy;
+import com.example.JobListing.Entities.Enums.CompanyRemotePolicy;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -23,7 +23,7 @@ public class Company extends BaseEntity
     private String Description;
     private Integer EmployeeCount;
     private CompanyType Type;
-    private RemotePolicy RemotePolicy;
+    private CompanyRemotePolicy CompanyRemotePolicy;
     private boolean IsHiring;
 
     @OneToMany(

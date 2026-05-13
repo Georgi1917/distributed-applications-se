@@ -1,11 +1,11 @@
 package com.example.JobListing.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import tools.jackson.core.ObjectReadContext;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,5 +22,8 @@ public class JobListing extends BaseEntity
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company Company;
+
+    @OneToMany(mappedBy = "JobListing")
+    private Set<JobApplication> Applications = new HashSet<>();
 
 }

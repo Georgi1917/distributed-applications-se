@@ -38,6 +38,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
         return CompletableFuture.completedFuture(items.stream()
                                             .map(item -> JobListingResponseDTO.builder()
+                                                    .Id(item.getId())
                                                     .Name(item.getName())
                                                     .Description(item.getDescription())
                                                     .company_id(item.getCompany().getId()).build()).toList());
@@ -52,6 +53,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         JobListing item = future.join();
 
         return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
+                            .Id(item.getId())
                             .Name(item.getName())
                             .Description(item.getDescription())
                             .company_id(item.getCompany().getId()).build());
@@ -71,6 +73,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         super.Save(item);
 
         return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
+                            .Id(item.getId())
                             .Name(item.getName())
                             .Description(item.getDescription())
                             .company_id(item.getCompany().getId()).build());
@@ -91,6 +94,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         super.Save(item);
 
         return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
+                .Id(item.getId())
                 .Name(item.getName())
                 .Description(item.getDescription())
                 .company_id(item.getCompany().getId()).build());
@@ -105,6 +109,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         JobListing item = future.join();
 
         return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
+                .Id(item.getId())
                 .Name(item.getName())
                 .Description(item.getDescription())
                 .company_id(item.getCompany().getId()).build());
