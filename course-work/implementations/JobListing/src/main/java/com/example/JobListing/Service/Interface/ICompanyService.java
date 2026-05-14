@@ -11,14 +11,14 @@ public interface ICompanyService
 {
 
     @Async
-    public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies();
+    CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies();
     @Async
-    public CompletableFuture<CompanyResponseDTO> GetCompany(int id);
+    CompletableFuture<CompanyResponseDTO> GetCompany(int id);
     @Async
-    public CompletableFuture<CompanyResponseDTO> SaveCompany(CompanyRequestDTO entity);
+    CompletableFuture<CompanyResponseDTO> SaveCompany(CompanyRequestDTO entity);
     @Async
-    public CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity);
+    CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity);
     @Async
-    public CompletableFuture<CompanyResponseDTO> DeleteCompany(int id);
+    CompletableFuture<CompanyResponseDTO> DeleteCompany(int id);
 
 }

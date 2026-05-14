@@ -15,14 +15,14 @@ public interface IJobListingService
 {
 
     @Async
-    public CompletableFuture<List<JobListingResponseDTO>> GetAllListings();
+    CompletableFuture<List<JobListingResponseDTO>> GetAllListings();
     @Async
-    public CompletableFuture<JobListingResponseDTO> GetListing(int id);
+    CompletableFuture<JobListingResponseDTO> GetListing(int id);
     @Async
-    public CompletableFuture<JobListingResponseDTO> SaveListing(JobListingCreateDTO entity);
+    CompletableFuture<JobListingResponseDTO> SaveListing(JobListingCreateDTO entity);
     @Async
-    public CompletableFuture<JobListingResponseDTO> UpdateListing(int id, JobListingUpdateDTO entity);
+    CompletableFuture<JobListingResponseDTO> UpdateListing(int id, JobListingUpdateDTO entity);
     @Async
-    public CompletableFuture<JobListingResponseDTO> DeleteListing(int id);
+    CompletableFuture<JobListingResponseDTO> DeleteListing(int id);
 
 }

@@ -10,14 +10,14 @@ public interface IService<T extends BaseEntity>
 {
 
     @Async
-    public CompletableFuture<List<T>> GetAll();
+    CompletableFuture<List<T>> GetAll();
     @Async
-    public CompletableFuture<T> GetItem(Integer id);
+    CompletableFuture<T> GetItem(Integer id);
     @Async
-    public CompletableFuture<T> Save(T entity);
+    CompletableFuture<T> Save(T entity);
     @Async
-    public CompletableFuture<T> Delete(int id);
+    CompletableFuture<T> Delete(int id);
     @Async
-    public CompletableFuture<T> Update(int id, T user);
+    CompletableFuture<T> Update(int id, T user);
 
 }

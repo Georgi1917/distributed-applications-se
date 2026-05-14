@@ -13,14 +13,14 @@ public interface IUserService
 {
 
     @Async
-    public CompletableFuture<List<UserResponseDTO>> GetAllUsers();
+    CompletableFuture<List<UserResponseDTO>> GetAllUsers();
     @Async
-    public CompletableFuture<UserResponseDTO> GetUser(int id);
+    CompletableFuture<UserResponseDTO> GetUser(int id);
     @Async
-    public CompletableFuture<UserResponseDTO> SaveUser(RegisterDTO entity);
+    CompletableFuture<UserResponseDTO> SaveUser(RegisterDTO entity);
     @Async
-    public CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity);
+    CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity);
     @Async
-    public CompletableFuture<UserResponseDTO> DeleteUser(int id);
+    CompletableFuture<UserResponseDTO> DeleteUser(int id);
 
 }
