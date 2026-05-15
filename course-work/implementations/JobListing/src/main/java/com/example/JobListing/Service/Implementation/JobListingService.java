@@ -41,6 +41,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                                                     .Id(item.getId())
                                                     .Name(item.getName())
                                                     .Description(item.getDescription())
+                                                    .ExperienceLevel(item.getExperienceLevel())
                                                     .company_id(item.getCompany().getId()).build()).toList());
 
     }
@@ -56,6 +57,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                             .Id(item.getId())
                             .Name(item.getName())
                             .Description(item.getDescription())
+                            .ExperienceLevel(item.getExperienceLevel())
                             .company_id(item.getCompany().getId()).build());
 
     }
@@ -68,6 +70,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         JobListing item = JobListing.builder()
                                     .Name(entity.Name())
                                     .Description(entity.Description())
+                                    .ExperienceLevel(entity.ExperienceLevel())
                                     .Company(company).build();
 
         super.Save(item);
@@ -76,6 +79,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                             .Id(item.getId())
                             .Name(item.getName())
                             .Description(item.getDescription())
+                            .ExperienceLevel(item.getExperienceLevel())
                             .company_id(item.getCompany().getId()).build());
 
     }
@@ -90,6 +94,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
         item.setName(entity.Name());
         item.setDescription(entity.Description());
+        item.setExperienceLevel(entity.ExperienceLevel());
 
         super.Save(item);
 
@@ -97,6 +102,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                 .Id(item.getId())
                 .Name(item.getName())
                 .Description(item.getDescription())
+                .ExperienceLevel(item.getExperienceLevel())
                 .company_id(item.getCompany().getId()).build());
 
     }
@@ -112,6 +118,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                 .Id(item.getId())
                 .Name(item.getName())
                 .Description(item.getDescription())
+                .ExperienceLevel(item.getExperienceLevel())
                 .company_id(item.getCompany().getId()).build());
 
     }

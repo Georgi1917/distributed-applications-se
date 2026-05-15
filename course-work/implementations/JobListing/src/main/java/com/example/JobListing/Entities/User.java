@@ -1,5 +1,6 @@
 package com.example.JobListing.Entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -21,7 +22,7 @@ public class User extends BaseEntity {
     private String Email;
     private String Password;
 
-    @OneToMany(mappedBy = "Applicant")
+    @OneToMany(mappedBy = "Applicant", cascade = CascadeType.ALL)
     private Set<JobApplication> Applications = new HashSet<>();
 
 }
