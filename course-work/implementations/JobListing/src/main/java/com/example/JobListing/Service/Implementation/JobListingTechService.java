@@ -11,10 +11,12 @@ import com.example.JobListing.Repository.TechRepository;
 import com.example.JobListing.Service.Interface.IJobListingService;
 import com.example.JobListing.Service.Interface.IJobListingTech;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Service
 public class JobListingTechService extends BaseService<JobListingTech> implements IJobListingTech
 {
 
@@ -56,7 +58,7 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     {
 
         List<JobListingTech> items = super.GetAll().join().stream()
-                .filter(item -> item.getListing().getId() == tech_id).toList();
+                .filter(item -> item.getTech().getId() == tech_id).toList();
 
         return CompletableFuture.completedFuture(items.stream().map(
                 item -> JobListingTechResponseDTO

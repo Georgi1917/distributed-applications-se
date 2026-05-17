@@ -28,4 +28,7 @@ public class JobListing extends BaseEntity
     @OneToMany(mappedBy = "JobListing", cascade = CascadeType.ALL)
     private Set<JobApplication> Applications = new HashSet<>();
 
+    @OneToMany(mappedBy = "Listing", cascade = CascadeType.ALL)
+    private Set<JobListingTech> Techs = new HashSet<>();
+
 }
