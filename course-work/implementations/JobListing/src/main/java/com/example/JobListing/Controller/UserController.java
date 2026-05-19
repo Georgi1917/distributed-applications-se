@@ -2,6 +2,7 @@ package com.example.JobListing.Controller;
 
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
+import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping("/")
     @Async
-    public CompletableFuture<UserResponseDTO> SaveUser(@Valid @RequestBody RegisterDTO user)
+    public CompletableFuture<UserResponseDTO> SaveUser(@Valid @RequestBody UserCreationDTO user)
     {
 
         return _service.SaveUser(user);

@@ -3,14 +3,19 @@ package com.example.JobListing.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService implements IJwtService
 {
+
+    private final String secretKey = "f1d42a0caabbbbea2588fc370e92e9f31deb786f7e68c989cd3d3569c87d97fd";
+    private final SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
     public String GenerateToken(String Username)
     {
@@ -47,7 +52,7 @@ public class JwtService implements IJwtService
     {
 
         return Jwts.parser()
-                .verifyWith((SecretKey) key)
+                .verifyWith(key)
                 .build()
                 .parseSignedClaims(Token)
                 .getPayload();

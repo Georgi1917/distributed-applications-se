@@ -1,7 +1,9 @@
 package com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs;
 
+import com.example.JobListing.Entities.Enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -13,6 +15,8 @@ public record UpdateDTO
         String Email,
         @NotBlank(message = "Username is required")
         @Size(min = 6, message = "Username must be at least 6 characters long")
-        String Username
+        String Username,
+        @NotNull(message = "Role is required")
+        UserRole Role
     )
 { }
