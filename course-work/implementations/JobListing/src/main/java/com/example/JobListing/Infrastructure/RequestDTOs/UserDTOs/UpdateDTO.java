@@ -12,11 +12,11 @@ public record UpdateDTO
     (
         @NotBlank(message = "Email is required")
         @Email(message = "Email is invalid")
-        String Email,
+        String email,
         @NotBlank(message = "Username is required")
         @Size(min = 6, message = "Username must be at least 6 characters long")
-        String Username,
+        String username,
         @NotNull(message = "Role is required")
-        UserRole Role
+        UserRole role
     )
 { }

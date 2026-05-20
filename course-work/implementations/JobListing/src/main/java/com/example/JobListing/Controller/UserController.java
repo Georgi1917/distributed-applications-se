@@ -1,12 +1,12 @@
 package com.example.JobListing.Controller;
 
-import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +24,24 @@ public class UserController {
     }
 
     @GetMapping("/")
-    @Async
-    public CompletableFuture<List<UserResponseDTO>> GetAllUsers()
+    public List<UserResponseDTO> GetAllUsers(Authentication auth)
     {
 
-        return _service.GetAllUsers();
+        System.out.println(auth.getAuthorities());
+
+        return _service.GetAllUsers().join();
+
+    }
+
+    @GetMapping("/test")
+    public String Test(Authentication auth)
+    {
+
+        System.out.println("AUTH : " + auth);
+        System.out.println("IS_AUTH : " + auth.isAuthenticated());
+        System.out.println("ROLES : " + auth.getAuthorities());
+
+        return "OK";
 
     }
 

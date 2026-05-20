@@ -24,11 +24,10 @@ public class CompanyController
     }
 
     @GetMapping("/")
-    @Async
-    public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies()
+    public List<CompanyResponseDTO> GetAllCompanies()
     {
 
-        return _service.GetAllCompanies();
+        return _service.GetAllCompanies().join();
 
     }
 

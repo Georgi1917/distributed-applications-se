@@ -1,15 +1,12 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.User;
-import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
-import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.UserRepository;
 import com.example.JobListing.Service.Interface.IUserService;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +17,12 @@ import java.util.concurrent.CompletableFuture;
 public class UserService extends BaseService<User> implements IUserService
 {
 
-    private final UserRepository _repository;
     private final PasswordEncoder _encoder;
 
     public UserService(UserRepository repository, PasswordEncoder encoder)
     {
 
         super(repository);
-        _repository = repository;
         _encoder = encoder;
 
     }
@@ -67,24 +62,14 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<User> GetUserByUsername(String username) throws UsernameNotFoundException
-    {
-
-        return CompletableFuture.completedFuture(_repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found")
-        ));
-
-    }
-
-    @Async
     public CompletableFuture<UserResponseDTO> SaveUser(UserCreationDTO entity)
     {
 
         User user = User.builder()
-                        .Username(entity.Username())
-                        .Email(entity.Email())
-                        .Password(_encoder.encode(entity.Password()))
-                        .Role(entity.Role()).build();
+                        .username(entity.username())
+                        .email(entity.email())
+                        .password(_encoder.encode(entity.password()))
+                        .role(entity.role()).build();
 
         super.Save(user);
 
@@ -104,9 +89,9 @@ public class UserService extends BaseService<User> implements IUserService
         CompletableFuture<User> future = super.GetItem(id);
         User user = future.join();
 
-        user.setUsername(entity.Username());
-        user.setEmail(entity.Email());
-        user.setRole(entity.Role());
+        user.setUsername(entity.username());
+        user.setEmail(entity.email());
+        user.setRole(entity.role());
 
         super.Save(user);
 

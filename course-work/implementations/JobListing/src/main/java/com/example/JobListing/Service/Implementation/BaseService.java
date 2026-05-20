@@ -4,6 +4,7 @@ import com.example.JobListing.Entities.BaseEntity;
 import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.IService;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

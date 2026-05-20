@@ -3,11 +3,11 @@ package com.example.JobListing.AuthFilter;
 import com.example.JobListing.AuthService.JwtService;
 import com.example.JobListing.Entities.User;
 import com.example.JobListing.Repository.UserRepository;
-import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -36,8 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter
     @Override
     protected void doFilterInternal
             (HttpServletRequest request,
-             HttpServletResponse response,
-             FilterChain filterChain)
+             @NonNull HttpServletResponse response,
+             @NonNull FilterChain filterChain)
             throws ServletException, IOException
     {
 

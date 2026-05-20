@@ -1,13 +1,9 @@
 package com.example.JobListing.Service.Interface;
 
-import com.example.JobListing.Entities.User;
-import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
-import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -19,8 +15,6 @@ public interface IUserService
     CompletableFuture<List<UserResponseDTO>> GetAllUsers();
     @Async
     CompletableFuture<UserResponseDTO> GetUser(int id);
-    @Async
-    CompletableFuture<User> GetUserByUsername(String username) throws UsernameNotFoundException;
     @Async
     CompletableFuture<UserResponseDTO> SaveUser(UserCreationDTO entity);
     @Async

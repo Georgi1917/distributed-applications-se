@@ -22,16 +22,16 @@ import java.util.Set;
 public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
-    private String Username;
+    private String username;
     @Column(nullable = false)
-    private String Email;
+    private String email;
     @Column(nullable = false)
-    private String Password;
+    private String password;
     @Enumerated(EnumType.STRING)
-    private UserRole Role;
+    private UserRole role;
 
     @OneToMany(mappedBy = "Applicant", cascade = CascadeType.ALL)
-    private Set<JobApplication> Applications = new HashSet<>();
+    private Set<JobApplication> applications = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -44,16 +44,21 @@ public class AuthController
     {
 
         System.out.println("Controller 1");
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        entity.Username(),
-                        entity.Password()
-                )
-        );
+
+        try{
+            authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            entity.username(),
+                            entity.password()
+                    )
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Controller 2");
 
-        String token = _service.GenerateToken(entity.Username());
+        String token = _service.GenerateToken(entity.username());
 
         System.out.println("Controller 3");
 
@@ -67,10 +72,10 @@ public class AuthController
     {
 
         return _user_service.SaveUser(UserCreationDTO.builder()
-                .Username(entity.Username())
-                .Email(entity.Email())
-                .Password(entity.Password())
-                .Role(UserRole.USER).build());
+                .username(entity.username())
+                .email(entity.email())
+                .password(entity.password())
+                .role(UserRole.USER).build());
 
     }
 
