@@ -1,6 +1,7 @@
 package com.example.JobListing.Entities;
 
 import com.example.JobListing.Entities.Enums.TechCategory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -22,6 +23,7 @@ public class Tech extends BaseEntity
     private TechCategory TechCategory;
 
     @OneToMany(mappedBy = "Tech", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<JobListingTech> Listings = new HashSet<>();
 
 }

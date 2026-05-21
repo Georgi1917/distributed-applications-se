@@ -26,19 +26,17 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies()
     {
 
-        CompletableFuture<List<Company>> future = super.GetAll();
-        List<Company> items = future.join();
-
-        return CompletableFuture.completedFuture(items.stream()
-                                            .map(item -> CompanyResponseDTO.builder()
-                                                    .Id(item.getId())
-                                                    .CompanyName(item.getCompanyName())
-                                                    .Description(item.getDescription())
-                                                    .EmployeeCount(item.getEmployeeCount())
-                                                    .Type(item.getType())
-                                                    .CompanyRemotePolicy(item.getCompanyRemotePolicy())
-                                                    .IsHiring(item.isIsHiring()).build()).toList()
-                                            );
+        return super.GetAll().thenApply(
+                items -> items.stream()
+                        .map(item -> CompanyResponseDTO.builder()
+                                .Id(item.getId())
+                                .CompanyName(item.getCompanyName())
+                                .Description(item.getDescription())
+                                .EmployeeCount(item.getEmployeeCount())
+                                .Type(item.getType())
+                                .CompanyRemotePolicy(item.getCompanyRemotePolicy())
+                                .IsHiring(item.isIsHiring()).build()).toList()
+        );
 
     }
 
@@ -46,17 +44,16 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     public CompletableFuture<CompanyResponseDTO> GetCompany(int id)
     {
 
-        CompletableFuture<Company> future = super.GetItem(id);
-        Company company = future.join();
-
-        return CompletableFuture.completedFuture(CompanyResponseDTO.builder()
-                .Id(company.getId())
-                .CompanyName(company.getCompanyName())
-                .Description(company.getDescription())
-                .EmployeeCount(company.getEmployeeCount())
-                .Type(company.getType())
-                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                .IsHiring(company.isIsHiring()).build());
+        return super.GetItem(id).thenApply(
+                company -> CompanyResponseDTO.builder()
+                        .Id(company.getId())
+                        .CompanyName(company.getCompanyName())
+                        .Description(company.getDescription())
+                        .EmployeeCount(company.getEmployeeCount())
+                        .Type(company.getType())
+                        .CompanyRemotePolicy(company.getCompanyRemotePolicy())
+                        .IsHiring(company.isIsHiring()).build()
+        );
 
     }
 
@@ -89,26 +86,30 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     public CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity)
     {
 
-        CompletableFuture<Company> future = super.GetItem(id);
-        Company company = future.join();
+        return super.GetItem(id).thenApply(
+                company -> {
 
-        company.setCompanyName(entity.CompanyName());
-        company.setDescription(entity.Description());
-        company.setEmployeeCount(entity.EmployeeCount());
-        company.setType(entity.Type());
-        company.setCompanyRemotePolicy(entity.CompanyRemotePolicy());
-        company.setIsHiring(entity.IsHiring());
+                    company.setCompanyName(entity.CompanyName());
+                    company.setDescription(entity.Description());
+                    company.setEmployeeCount(entity.EmployeeCount());
+                    company.setType(entity.Type());
+                    company.setCompanyRemotePolicy(entity.CompanyRemotePolicy());
+                    company.setIsHiring(entity.IsHiring());
 
-        super.Save(company);
+                    super.Save(company);
+                    return company;
 
-        return CompletableFuture.completedFuture(CompanyResponseDTO.builder()
-                .Id(company.getId())
-                .CompanyName(company.getCompanyName())
-                .Description(company.getDescription())
-                .EmployeeCount(company.getEmployeeCount())
-                .Type(company.getType())
-                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                .IsHiring(company.isIsHiring()).build());
+                }
+        ).thenApply(
+                company -> CompanyResponseDTO.builder()
+                        .Id(company.getId())
+                        .CompanyName(company.getCompanyName())
+                        .Description(company.getDescription())
+                        .EmployeeCount(company.getEmployeeCount())
+                        .Type(company.getType())
+                        .CompanyRemotePolicy(company.getCompanyRemotePolicy())
+                        .IsHiring(company.isIsHiring()).build()
+        );
 
     }
 
@@ -116,17 +117,16 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     public CompletableFuture<CompanyResponseDTO> DeleteCompany(int id)
     {
 
-        CompletableFuture<Company> future = super.Delete(id);
-        Company company = future.join();
-
-        return CompletableFuture.completedFuture(CompanyResponseDTO.builder()
-                .Id(company.getId())
-                .CompanyName(company.getCompanyName())
-                .Description(company.getDescription())
-                .EmployeeCount(company.getEmployeeCount())
-                .Type(company.getType())
-                .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                .IsHiring(company.isIsHiring()).build());
+        return super.Delete(id).thenApply(
+                company -> CompanyResponseDTO.builder()
+                        .Id(company.getId())
+                        .CompanyName(company.getCompanyName())
+                        .Description(company.getDescription())
+                        .EmployeeCount(company.getEmployeeCount())
+                        .Type(company.getType())
+                        .CompanyRemotePolicy(company.getCompanyRemotePolicy())
+                        .IsHiring(company.isIsHiring()).build()
+        );
 
     }
 

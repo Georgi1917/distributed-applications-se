@@ -24,35 +24,31 @@ public class JobListingTechController
     }
 
     @GetMapping("by_listing/{listing_id}")
-    @Async
-    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListing(@PathVariable int listing_id)
+    public List<JobListingTechResponseDTO> GetAllByListing(@PathVariable int listing_id)
     {
 
-        return _service.GetAllByListingId(listing_id);
+        return _service.GetAllByListingId(listing_id).join();
 
     }
 
     @GetMapping("by_tech/{tech_id}")
-    @Async
-    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTech(@PathVariable int tech_id)
+    public List<JobListingTechResponseDTO> GetAllByTech(@PathVariable int tech_id)
     {
 
-        return _service.GetAllByTechId(tech_id);
+        return _service.GetAllByTechId(tech_id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<JobListingTechResponseDTO> SaveJobListingTech
+    public JobListingTechResponseDTO SaveJobListingTech
             (@RequestBody JobListingTechRequestDTO entity)
     {
 
-        return _service.SaveListingTech(entity);
+        return _service.SaveListingTech(entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
     public void DeleteJobListingTech(@PathVariable int id)
     {
 

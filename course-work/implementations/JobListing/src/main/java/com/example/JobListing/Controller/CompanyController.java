@@ -32,39 +32,35 @@ public class CompanyController
     }
 
     @GetMapping("/{id}")
-    @Async
-    public CompletableFuture<CompanyResponseDTO> GetCompany(@PathVariable int id)
+    public CompanyResponseDTO GetCompany(@PathVariable int id)
     {
 
-        return _service.GetCompany(id);
+        return _service.GetCompany(id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<CompanyResponseDTO> SaveCompany(@RequestBody CompanyRequestDTO entity)
+    public CompanyResponseDTO SaveCompany(@RequestBody CompanyRequestDTO entity)
     {
 
-        return _service.SaveCompany(entity);
+        return _service.SaveCompany(entity).join();
 
     }
 
     @PutMapping("/update/{id}")
-    @Async
-    public CompletableFuture<CompanyResponseDTO> UpdateCompany
+    public CompanyResponseDTO UpdateCompany
                 (@PathVariable int id, @RequestBody CompanyRequestDTO entity)
     {
 
-        return _service.UpdateCompany(id, entity);
+        return _service.UpdateCompany(id, entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
-    public CompletableFuture<CompanyResponseDTO> DeleteCompany(@PathVariable int id)
+    public CompanyResponseDTO DeleteCompany(@PathVariable int id)
     {
 
-        return _service.DeleteCompany(id);
+        return _service.DeleteCompany(id).join();
 
     }
 

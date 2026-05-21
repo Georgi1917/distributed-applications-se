@@ -23,43 +23,38 @@ public class TechController
     }
 
     @GetMapping("/")
-    @Async
-    public CompletableFuture<List<Tech>> GetAll()
+    public List<Tech> GetAll()
     {
 
-        return _service.GetAll();
+        return _service.GetAll().join();
 
     }
 
     @GetMapping("/{id}")
-    @Async
-    public CompletableFuture<Tech> GetTech(@PathVariable int id)
+    public Tech GetTech(@PathVariable int id)
     {
 
-        return _service.GetItem(id);
+        return _service.GetItem(id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<Tech> SaveTech(@RequestBody Tech entity)
+    public Tech SaveTech(@RequestBody Tech entity)
     {
 
-        return _service.Save(entity);
+        return _service.Save(entity).join();
 
     }
 
     @PutMapping("/update/{id}")
-    @Async
-    public CompletableFuture<Tech> UpdateTech(@PathVariable int id, @RequestBody Tech entity)
+    public Tech UpdateTech(@PathVariable int id, @RequestBody Tech entity)
     {
 
-        return _service.Update(id, entity);
+        return _service.Update(id, entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
     public void DeleteTech(@PathVariable int id)
     {
 

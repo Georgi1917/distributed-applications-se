@@ -25,48 +25,43 @@ public class JobListingController
     }
 
     @GetMapping("/")
-    @Async
-    public CompletableFuture<List<JobListingResponseDTO>> GetAllListings()
+    public List<JobListingResponseDTO> GetAllListings()
     {
 
-        return _service.GetAllListings();
+        return _service.GetAllListings().join();
 
     }
 
     @GetMapping("/{id}")
-    @Async
-    public CompletableFuture<JobListingResponseDTO> GetListing(@PathVariable int id)
+    public JobListingResponseDTO GetListing(@PathVariable int id)
     {
 
-        return _service.GetListing(id);
+        return _service.GetListing(id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<JobListingResponseDTO> SaveListing(@RequestBody JobListingCreateDTO entity)
+    public JobListingResponseDTO SaveListing(@RequestBody JobListingCreateDTO entity)
     {
 
-        return _service.SaveListing(entity);
+        return _service.SaveListing(entity).join();
 
     }
 
     @PutMapping("/update/{id}")
-    @Async
-    public CompletableFuture<JobListingResponseDTO> UpdateListing
+    public JobListingResponseDTO UpdateListing
             (@PathVariable int id, @RequestBody JobListingUpdateDTO entity)
     {
 
-        return _service.UpdateListing(id, entity);
+        return _service.UpdateListing(id, entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
-    public CompletableFuture<JobListingResponseDTO> DeleteListing(@PathVariable int id)
+    public JobListingResponseDTO DeleteListing(@PathVariable int id)
     {
 
-        return _service.DeleteListing(id);
+        return _service.DeleteListing(id).join();
 
     }
 

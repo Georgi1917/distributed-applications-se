@@ -5,7 +5,6 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDT
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,57 +26,39 @@ public class UserController {
     public List<UserResponseDTO> GetAllUsers(Authentication auth)
     {
 
-        System.out.println(auth.getAuthorities());
-
         return _service.GetAllUsers().join();
 
     }
 
-    @GetMapping("/test")
-    public String Test(Authentication auth)
-    {
-
-        System.out.println("AUTH : " + auth);
-        System.out.println("IS_AUTH : " + auth.isAuthenticated());
-        System.out.println("ROLES : " + auth.getAuthorities());
-
-        return "OK";
-
-    }
-
     @GetMapping("/{id}")
-    @Async
-    public CompletableFuture<UserResponseDTO> GetUser(@PathVariable int id)
+    public UserResponseDTO GetUser(@PathVariable int id)
     {
 
-        return _service.GetUser(id);
+        return _service.GetUser(id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<UserResponseDTO> SaveUser(@Valid @RequestBody UserCreationDTO user)
+    public UserResponseDTO SaveUser(@Valid @RequestBody UserCreationDTO user)
     {
 
-        return _service.SaveUser(user);
+        return _service.SaveUser(user).join();
 
     }
 
     @PutMapping("/update/{id}")
-    @Async
-    public CompletableFuture<UserResponseDTO> UpdateUser(@PathVariable int id, @Valid @RequestBody UpdateDTO entity)
+    public UserResponseDTO UpdateUser(@PathVariable int id, @Valid @RequestBody UpdateDTO entity)
     {
 
-        return _service.UpdateUser(id, entity);
+        return _service.UpdateUser(id, entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
-    public CompletableFuture<UserResponseDTO> DeleteUser(@PathVariable int id)
+    public UserResponseDTO DeleteUser(@PathVariable int id)
     {
 
-        return _service.DeleteUser(id);
+        return _service.DeleteUser(id).join();
 
     }
 

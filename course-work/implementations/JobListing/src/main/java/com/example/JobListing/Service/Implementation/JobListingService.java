@@ -33,16 +33,14 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     public CompletableFuture<List<JobListingResponseDTO>> GetAllListings()
     {
 
-        CompletableFuture<List<JobListing>> future = super.GetAll();
-        List<JobListing> items = future.join();
-
-        return CompletableFuture.completedFuture(items.stream()
-                                            .map(item -> JobListingResponseDTO.builder()
-                                                    .Id(item.getId())
-                                                    .Name(item.getName())
-                                                    .Description(item.getDescription())
-                                                    .ExperienceLevel(item.getExperienceLevel())
-                                                    .company_id(item.getCompany().getId()).build()).toList());
+        return super.GetAll().thenApply(
+                items -> items.stream()
+                        .map(item -> JobListingResponseDTO.builder()
+                                .Id(item.getId())
+                                .Name(item.getName())
+                                .Description(item.getDescription())
+                                .ExperienceLevel(item.getExperienceLevel())
+                                .company_id(item.getCompany().getId()).build()).toList());
 
     }
 
@@ -50,15 +48,13 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     public CompletableFuture<JobListingResponseDTO> GetListing(int id)
     {
 
-        CompletableFuture<JobListing> future = super.GetItem(id);
-        JobListing item = future.join();
-
-        return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
-                            .Id(item.getId())
-                            .Name(item.getName())
-                            .Description(item.getDescription())
-                            .ExperienceLevel(item.getExperienceLevel())
-                            .company_id(item.getCompany().getId()).build());
+        return super.GetItem(id).thenApply(
+                item -> JobListingResponseDTO.builder()
+                        .Id(item.getId())
+                        .Name(item.getName())
+                        .Description(item.getDescription())
+                        .ExperienceLevel(item.getExperienceLevel())
+                        .company_id(item.getCompany().getId()).build());
 
     }
 
@@ -89,21 +85,25 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
             (@PathVariable int id, @RequestBody JobListingUpdateDTO entity)
     {
 
-        CompletableFuture<JobListing> future = super.GetItem(id);
-        JobListing item = future.join();
+        return super.GetItem(id).thenApply(
+                item -> {
 
-        item.setName(entity.Name());
-        item.setDescription(entity.Description());
-        item.setExperienceLevel(entity.ExperienceLevel());
+                    item.setName(entity.Name());
+                    item.setDescription(entity.Description());
+                    item.setExperienceLevel(entity.ExperienceLevel());
 
-        super.Save(item);
+                    super.Save(item);
 
-        return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
-                .Id(item.getId())
-                .Name(item.getName())
-                .Description(item.getDescription())
-                .ExperienceLevel(item.getExperienceLevel())
-                .company_id(item.getCompany().getId()).build());
+                    return item;
+
+                }
+        ).thenApply(
+                item -> JobListingResponseDTO.builder()
+                        .Id(item.getId())
+                        .Name(item.getName())
+                        .Description(item.getDescription())
+                        .ExperienceLevel(item.getExperienceLevel())
+                        .company_id(item.getCompany().getId()).build());
 
     }
 
@@ -111,15 +111,14 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     public CompletableFuture<JobListingResponseDTO> DeleteListing(@PathVariable int id)
     {
 
-        CompletableFuture<JobListing> future = super.Delete(id);
-        JobListing item = future.join();
-
-        return CompletableFuture.completedFuture(JobListingResponseDTO.builder()
-                .Id(item.getId())
-                .Name(item.getName())
-                .Description(item.getDescription())
-                .ExperienceLevel(item.getExperienceLevel())
-                .company_id(item.getCompany().getId()).build());
+        return super.Delete(id).thenApply(
+                item -> JobListingResponseDTO.builder()
+                        .Id(item.getId())
+                        .Name(item.getName())
+                        .Description(item.getDescription())
+                        .ExperienceLevel(item.getExperienceLevel())
+                        .company_id(item.getCompany().getId()).build()
+        );
 
     }
 

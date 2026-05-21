@@ -24,47 +24,42 @@ public class JobApplicationController
     }
 
     @GetMapping("by_user/{user_id}")
-    @Async
-    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(@PathVariable int user_id)
+    public List<JobApplicationResponseDTO> GetApplicationsByUser(@PathVariable int user_id)
     {
 
-        return _service.GetApplicationsByUser(user_id);
+        return _service.GetApplicationsByUser(user_id).join();
 
     }
 
     @GetMapping("by_listing/{listing_id}")
-    @Async
-    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(@PathVariable int listing_id)
+    public List<JobApplicationResponseDTO> GetApplicationsByListing(@PathVariable int listing_id)
     {
 
-        return _service.GetApplicationsByListing(listing_id);
+        return _service.GetApplicationsByListing(listing_id).join();
 
     }
 
     @GetMapping("{id}")
-    @Async
-    public CompletableFuture<JobApplicationResponseDTO> GetApplication(@PathVariable int id)
+    public JobApplicationResponseDTO GetApplication(@PathVariable int id)
     {
 
-        return _service.GetApplication(id);
+        return _service.GetApplication(id).join();
 
     }
 
     @PostMapping("/")
-    @Async
-    public CompletableFuture<JobApplicationResponseDTO> SaveApplication(@RequestBody JobApplicationRequestDTO entity)
+    public JobApplicationResponseDTO SaveApplication(@RequestBody JobApplicationRequestDTO entity)
     {
 
-        return _service.SaveApplication(entity);
+        return _service.SaveApplication(entity).join();
 
     }
 
     @DeleteMapping("/delete/{id}")
-    @Async
-    public CompletableFuture<JobApplicationResponseDTO> DeleteApplication(@PathVariable int id)
+    public JobApplicationResponseDTO DeleteApplication(@PathVariable int id)
     {
 
-        return _service.DeleteApplication(id);
+        return _service.DeleteApplication(id).join();
 
     }
 

@@ -39,16 +39,19 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListingId(int listing_id)
     {
 
-        List<JobListingTech> items = super.GetAll().join().stream()
-                .filter(item -> item.getListing().getId() == listing_id).toList();
-
-        return CompletableFuture.completedFuture(items.stream().map(
-                item -> JobListingTechResponseDTO
-                        .builder()
-                        .id(item.getId())
-                        .tech_id(item.getTech().getId())
-                        .listing_id(item.getListing().getId())
-                        .IsRequired(item.isIsRequired()).build()
+        return super.GetAll().thenApply(
+                items ->
+                        items.stream()
+                                .filter(item ->
+                                        item.getListing().getId() == listing_id).toList()
+        ).thenApply(
+                items -> items.stream().map(
+                        item -> JobListingTechResponseDTO
+                                .builder()
+                                .id(item.getId())
+                                .tech_id(item.getTech().getId())
+                                .listing_id(item.getListing().getId())
+                                .IsRequired(item.isIsRequired()).build()
         ).toList());
 
     }
@@ -57,17 +60,20 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTechId(int tech_id)
     {
 
-        List<JobListingTech> items = super.GetAll().join().stream()
-                .filter(item -> item.getTech().getId() == tech_id).toList();
-
-        return CompletableFuture.completedFuture(items.stream().map(
-                item -> JobListingTechResponseDTO
-                        .builder()
-                        .id(item.getId())
-                        .tech_id(item.getTech().getId())
-                        .listing_id(item.getListing().getId())
-                        .IsRequired(item.isIsRequired()).build()
-        ).toList());
+        return super.GetAll().thenApply(
+                items ->
+                        items.stream()
+                                .filter(item ->
+                                        item.getTech().getId() == tech_id).toList()
+        ).thenApply(
+                items -> items.stream().map(
+                        item -> JobListingTechResponseDTO
+                                .builder()
+                                .id(item.getId())
+                                .tech_id(item.getTech().getId())
+                                .listing_id(item.getListing().getId())
+                                .IsRequired(item.isIsRequired()).build()
+                ).toList());
 
     }
 

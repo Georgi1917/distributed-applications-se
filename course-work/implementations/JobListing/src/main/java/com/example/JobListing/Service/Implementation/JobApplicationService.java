@@ -37,15 +37,16 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(int user_id)
     {
 
-        CompletableFuture<List<JobApplication>> future = super.GetAll();
-        List<JobApplication> items = future.join().stream()
-                .filter(item -> item.getApplicant().getId() == user_id).toList();
-
-        return CompletableFuture.completedFuture(items.stream().map(item ->
-                JobApplicationResponseDTO.builder()
-                        .Id(item.getId())
-                        .user_id(item.getApplicant().getId())
-                        .listing_id(item.getJobListing().getId()).build()).toList());
+        return super.GetAll().thenApply(
+                items -> items.stream()
+                        .filter(item -> item.getApplicant().getId() == user_id).toList()
+        ).thenApply(
+                items -> items.stream().map(item ->
+                        JobApplicationResponseDTO.builder()
+                                .Id(item.getId())
+                                .user_id(item.getApplicant().getId())
+                                .listing_id(item.getJobListing().getId()).build()).toList()
+        );
 
     }
 
@@ -53,15 +54,16 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(int listing_id)
     {
 
-        CompletableFuture<List<JobApplication>> future = super.GetAll();
-        List<JobApplication> items = future.join().stream()
-                .filter(item -> item.getJobListing().getId() == listing_id).toList();
-
-        return CompletableFuture.completedFuture(items.stream().map(item ->
-                JobApplicationResponseDTO.builder()
-                        .Id(item.getId())
-                        .user_id(item.getApplicant().getId())
-                        .listing_id(item.getJobListing().getId()).build()).toList());
+        return super.GetAll().thenApply(
+                items -> items.stream()
+                        .filter(item -> item.getJobListing().getId() == listing_id).toList()
+        ).thenApply(
+                items -> items.stream().map(item ->
+                        JobApplicationResponseDTO.builder()
+                                .Id(item.getId())
+                                .user_id(item.getApplicant().getId())
+                                .listing_id(item.getJobListing().getId()).build()).toList()
+        );
 
     }
 
@@ -69,13 +71,12 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     public CompletableFuture<JobApplicationResponseDTO> GetApplication(int id)
     {
 
-        CompletableFuture<JobApplication> future = super.GetItem(id);
-        JobApplication item = future.join();
-
-        return CompletableFuture.completedFuture(JobApplicationResponseDTO.builder()
-                .Id(item.getId())
-                .user_id(item.getApplicant().getId())
-                .listing_id(item.getJobListing().getId()).build());
+        return super.GetItem(id).thenApply(
+                item -> JobApplicationResponseDTO.builder()
+                        .Id(item.getId())
+                        .user_id(item.getApplicant().getId())
+                        .listing_id(item.getJobListing().getId()).build()
+        );
 
     }
 
@@ -103,13 +104,12 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     public CompletableFuture<JobApplicationResponseDTO> DeleteApplication(int id)
     {
 
-        CompletableFuture<JobApplication> future = super.Delete(id);
-        JobApplication item = future.join();
-
-        return CompletableFuture.completedFuture(JobApplicationResponseDTO.builder()
-                .Id(item.getId())
-                .user_id(item.getApplicant().getId())
-                .listing_id(item.getJobListing().getId()).build());
+        return super.Delete(id).thenApply(
+                item -> JobApplicationResponseDTO.builder()
+                        .Id(item.getId())
+                        .user_id(item.getApplicant().getId())
+                        .listing_id(item.getJobListing().getId()).build()
+        );
 
     }
 
