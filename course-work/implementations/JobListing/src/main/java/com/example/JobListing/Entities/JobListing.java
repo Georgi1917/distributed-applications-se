@@ -17,8 +17,11 @@ import java.util.Set;
 public class JobListing extends BaseEntity
 {
 
+    @Column(nullable = false)
     private String Name;
+    @Column(nullable = false)
     private String Description;
+    @Enumerated(EnumType.STRING)
     private JobListingExperienceLevel ExperienceLevel;
 
     @ManyToOne(fetch = FetchType.LAZY)
