@@ -2,6 +2,7 @@ package com.example.JobListing.Controller;
 
 import com.example.JobListing.Entities.Tech;
 import com.example.JobListing.Service.Implementation.TechService;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class TechController
     }
 
     @PostMapping("/")
-    public Tech SaveTech(@RequestBody Tech entity)
+    public Tech SaveTech(@Valid @RequestBody Tech entity)
     {
 
         return _service.Save(entity).join();
@@ -47,7 +48,7 @@ public class TechController
     }
 
     @PutMapping("/update/{id}")
-    public Tech UpdateTech(@PathVariable int id, @RequestBody Tech entity)
+    public Tech UpdateTech(@PathVariable int id, @Valid @RequestBody Tech entity)
     {
 
         return _service.Update(id, entity).join();

@@ -3,6 +3,8 @@ package com.example.JobListing.Entities;
 import com.example.JobListing.Entities.Enums.CompanyType;
 import com.example.JobListing.Entities.Enums.CompanyRemotePolicy;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -23,9 +25,12 @@ public class Company extends BaseEntity
     private String Description;
     private Integer EmployeeCount;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CompanyType Type;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CompanyRemotePolicy CompanyRemotePolicy;
+    @Column(nullable = false)
     private boolean IsHiring;
 
     @OneToMany(

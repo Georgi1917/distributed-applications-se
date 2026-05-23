@@ -2,6 +2,7 @@ package com.example.JobListing.Entities;
 
 import com.example.JobListing.Entities.Enums.JobListingExperienceLevel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import tools.jackson.core.ObjectReadContext;
 

@@ -4,6 +4,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.JobListingDTOs.JobListi
 import com.example.JobListing.Infrastructure.RequestDTOs.JobListingDTOs.JobListingUpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobListingResponseDTO;
 import com.example.JobListing.Service.Implementation.JobListingService;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class JobListingController
     }
 
     @PostMapping("/")
-    public JobListingResponseDTO SaveListing(@RequestBody JobListingCreateDTO entity)
+    public JobListingResponseDTO SaveListing(@Valid @RequestBody JobListingCreateDTO entity)
     {
 
         return _service.SaveListing(entity).join();
@@ -50,7 +51,7 @@ public class JobListingController
 
     @PutMapping("/update/{id}")
     public JobListingResponseDTO UpdateListing
-            (@PathVariable int id, @RequestBody JobListingUpdateDTO entity)
+            (@PathVariable int id, @Valid @RequestBody JobListingUpdateDTO entity)
     {
 
         return _service.UpdateListing(id, entity).join();

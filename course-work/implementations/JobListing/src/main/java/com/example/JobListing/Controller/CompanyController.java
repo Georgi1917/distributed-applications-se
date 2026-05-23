@@ -3,6 +3,7 @@ package com.example.JobListing.Controller;
 import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Service.Implementation.CompanyService;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class CompanyController
     }
 
     @PostMapping("/")
-    public CompanyResponseDTO SaveCompany(@RequestBody CompanyRequestDTO entity)
+    public CompanyResponseDTO SaveCompany(@Valid @RequestBody CompanyRequestDTO entity)
     {
 
         return _service.SaveCompany(entity).join();
@@ -49,7 +50,7 @@ public class CompanyController
 
     @PutMapping("/update/{id}")
     public CompanyResponseDTO UpdateCompany
-                (@PathVariable int id, @RequestBody CompanyRequestDTO entity)
+                (@PathVariable int id, @Valid @RequestBody CompanyRequestDTO entity)
     {
 
         return _service.UpdateCompany(id, entity).join();

@@ -3,6 +3,7 @@ package com.example.JobListing.Controller;
 import com.example.JobListing.Infrastructure.RequestDTOs.JobApplicationDTOs.JobApplicationRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobApplicationResponseDTO;
 import com.example.JobListing.Service.Implementation.JobApplicationService;
+import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,7 @@ public class JobApplicationController
     }
 
     @PostMapping("/")
-    public JobApplicationResponseDTO SaveApplication(@RequestBody JobApplicationRequestDTO entity)
+    public JobApplicationResponseDTO SaveApplication(@Valid @RequestBody JobApplicationRequestDTO entity)
     {
 
         return _service.SaveApplication(entity).join();

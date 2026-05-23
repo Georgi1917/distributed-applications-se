@@ -13,12 +13,15 @@ public record UserCreationDTO
             @NotBlank(message = "Email is required")
             @Email(message = "Email is invalid")
             String email,
+
             @NotBlank(message = "Username is required")
             @Size(min = 6, message = "Username must be at least 6 characters long")
             String username,
+
             @NotBlank(message = "Password is required")
             @Size(min = 6, message = "Password must be at least 6 symbols long")
             String password,
+
             @NotNull(message = "Role is required")
             UserRole role
     )
