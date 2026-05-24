@@ -1,0 +1,1065 @@
+openapi: 3.0.0
+
+info:
+  title: JobListingAPI
+  version: 1.0.0
+  description: |
+    REST API for managing job listings, companies, technologies,
+    users and job applications.
+
+servers:
+  - url: http://localhost:8080
+    description: Local Development Server
+
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Companies
+  - name: Job Listings
+  - name: Job Applications
+  - name: Technologies
+  - name: Job Listing Technologies
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      description: Authenticates user and returns JWT token.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponseDTO'
+
+        '400':
+          description: Invalid request
+
+        '401':
+          description: Invalid credentials
+
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register new user
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDTO'
+
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+
+        '400':
+          description: Validation error
+
+  /user/:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponseDTO'
+
+        '401':
+          description: Unauthorized
+
+    post:
+      tags:
+        - Users
+      summary: Create new user
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreationDTO'
+
+      responses:
+        '201':
+          description: User created successfully
+
+        '400':
+          description: Validation error
+
+  /user/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by id
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+
+        '404':
+          description: User not found
+
+  /user/update/{id}:
+    put:
+      tags:
+        - Users
+      summary: Update user
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDTO'
+
+      responses:
+        '200':
+          description: User updated successfully
+
+        '400':
+          description: Validation error
+
+        '404':
+          description: User not found
+
+  /user/delete/{id}:
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: User deleted successfully
+
+        '404':
+          description: User not found
+
+  /company/:
+    get:
+      tags:
+        - Companies
+      summary: Get all companies
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: List of companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyResponseDTO'
+
+    post:
+      tags:
+        - Companies
+      summary: Create new company
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyRequestDTO'
+
+      responses:
+        '201':
+          description: Company created successfully
+
+        '400':
+          description: Validation error
+
+  /company/{id}:
+    get:
+      tags:
+        - Companies
+      summary: Get company by id
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Company found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponseDTO'
+
+        '404':
+          description: Company not found
+
+  /company/update/{id}:
+    put:
+      tags:
+        - Companies
+      summary: Update company
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyRequestDTO'
+
+      responses:
+        '200':
+          description: Company updated successfully
+
+        '404':
+          description: Company not found
+
+  /company/delete/{id}:
+    delete:
+      tags:
+        - Companies
+      summary: Delete company
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Company deleted successfully
+
+        '404':
+          description: Company not found
+
+  /job_listing/:
+    get:
+      tags:
+        - Job Listings
+      summary: Get all job listings
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: List of job listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobListingResponseDTO'
+
+    post:
+      tags:
+        - Job Listings
+      summary: Create new job listing
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobListingCreateDTO'
+
+      responses:
+        '201':
+          description: Job listing created successfully
+
+        '400':
+          description: Validation error
+
+  /job_listing/{id}:
+    get:
+      tags:
+        - Job Listings
+      summary: Get job listing by id
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Job listing found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobListingResponseDTO'
+
+        '404':
+          description: Job listing not found
+
+  /job_listing/update/{id}:
+    put:
+      tags:
+        - Job Listings
+      summary: Update job listing
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobListingUpdateDTO'
+
+      responses:
+        '200':
+          description: Job listing updated successfully
+
+        '404':
+          description: Job listing not found
+
+  /job_listing/delete/{id}:
+    delete:
+      tags:
+        - Job Listings
+      summary: Delete job listing
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Job listing deleted successfully
+
+        '404':
+          description: Job listing not found
+
+  /job_application/:
+    post:
+      tags:
+        - Job Applications
+      summary: Apply for a job
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobApplicationRequestDTO'
+
+      responses:
+        '201':
+          description: Application created successfully
+
+        '400':
+          description: Validation error
+
+  /job_application/{id}:
+    get:
+      tags:
+        - Job Applications
+      summary: Get application by id
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Application found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobApplicationResponseDTO'
+
+        '404':
+          description: Application not found
+
+  /job_application/by_user/{user_id}:
+    get:
+      tags:
+        - Job Applications
+      summary: Get applications by user
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: List of applications
+
+  /job_application/by_listing/{listing_id}:
+    get:
+      tags:
+        - Job Applications
+      summary: Get applications by listing
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: listing_id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: List of applications
+
+  /job_application/delete/{id}:
+    delete:
+      tags:
+        - Job Applications
+      summary: Delete application
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Application deleted successfully
+
+  /tech/:
+    get:
+      tags:
+        - Technologies
+      summary: Get all technologies
+      security:
+        - bearerAuth: []
+
+      responses:
+        '200':
+          description: List of technologies
+
+    post:
+      tags:
+        - Technologies
+      summary: Create technology
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tech'
+
+      responses:
+        '201':
+          description: Technology created successfully
+
+  /tech/{id}:
+    get:
+      tags:
+        - Technologies
+      summary: Get technology by id
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Technology found
+
+        '404':
+          description: Technology not found
+
+  /tech/update/{id}:
+    put:
+      tags:
+        - Technologies
+      summary: Update technology
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tech'
+
+      responses:
+        '200':
+          description: Technology updated successfully
+
+  /tech/delete/{id}:
+    delete:
+      tags:
+        - Technologies
+      summary: Delete technology
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Technology deleted successfully
+
+  /job_listing_tech/:
+    post:
+      tags:
+        - Job Listing Technologies
+      summary: Add technology to listing
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobListingTechRequestDTO'
+
+      responses:
+        '201':
+          description: Technology linked successfully
+
+  /job_listing_tech/by_listing/{listing_id}:
+    get:
+      tags:
+        - Job Listing Technologies
+      summary: Get technologies by listing
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: listing_id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: List of technologies for listing
+
+  /job_listing_tech/by_tech/{tech_id}:
+    get:
+      tags:
+        - Job Listing Technologies
+      summary: Get listings by technology
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: tech_id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: List of listings using technology
+
+  /job_listing_tech/delete/{id}:
+    delete:
+      tags:
+        - Job Listing Technologies
+      summary: Delete listing technology relation
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Relation deleted successfully
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    LoginDTO:
+      type: object
+      required:
+        - username
+        - password
+
+      properties:
+        username:
+          type: string
+          minLength: 6
+          example: johndoe
+
+        password:
+          type: string
+          minLength: 6
+          example: password123
+
+    RegisterDTO:
+      type: object
+
+      required:
+        - email
+        - username
+        - password
+
+      properties:
+        email:
+          type: string
+          format: email
+          example: john@example.com
+
+        username:
+          type: string
+          minLength: 6
+          example: johndoe
+
+        password:
+          type: string
+          minLength: 6
+          example: password123
+
+    AuthResponseDTO:
+      type: object
+
+      properties:
+        token:
+          type: string
+          example: jwt.token.here
+
+    UserCreationDTO:
+      type: object
+
+      required:
+        - email
+        - username
+        - password
+        - role
+
+      properties:
+        email:
+          type: string
+          format: email
+
+        username:
+          type: string
+          minLength: 6
+
+        password:
+          type: string
+          minLength: 6
+
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+    UpdateDTO:
+      type: object
+
+      required:
+        - email
+        - username
+        - role
+
+      properties:
+        email:
+          type: string
+          format: email
+
+        username:
+          type: string
+          minLength: 6
+
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+    UserResponseDTO:
+      type: object
+
+      properties:
+        Id:
+          type: integer
+
+        Email:
+          type: string
+
+        Username:
+          type: string
+
+        Role:
+          $ref: '#/components/schemas/UserRole'
+
+    CompanyRequestDTO:
+      type: object
+
+      required:
+        - CompanyName
+        - Description
+        - Type
+        - CompanyRemotePolicy
+        - IsHiring
+
+      properties:
+        CompanyName:
+          type: string
+          minLength: 3
+          maxLength: 60
+
+        Description:
+          type: string
+          maxLength: 2000
+
+        EmployeeCount:
+          type: integer
+
+        Type:
+          $ref: '#/components/schemas/CompanyType'
+
+        CompanyRemotePolicy:
+          $ref: '#/components/schemas/CompanyRemotePolicy'
+
+        IsHiring:
+          type: boolean
+
+    CompanyResponseDTO:
+      type: object
+
+      properties:
+        Id:
+          type: integer
+
+        CompanyName:
+          type: string
+
+        Description:
+          type: string
+
+        EmployeeCount:
+          type: integer
+
+        Type:
+          $ref: '#/components/schemas/CompanyType'
+
+        CompanyRemotePolicy:
+          $ref: '#/components/schemas/CompanyRemotePolicy'
+
+        IsHiring:
+          type: boolean
+
+    JobListingCreateDTO:
+      type: object
+
+      required:
+        - Name
+        - Description
+        - ExperienceLevel
+        - company_id
+
+      properties:
+        Name:
+          type: string
+          minLength: 3
+          maxLength: 60
+
+        Description:
+          type: string
+          maxLength: 2000
+
+        ExperienceLevel:
+          $ref: '#/components/schemas/JobListingExperienceLevel'
+
+        company_id:
+          type: integer
+
+    JobListingUpdateDTO:
+      type: object
+
+      required:
+        - Name
+        - Description
+        - ExperienceLevel
+
+      properties:
+        Name:
+          type: string
+          minLength: 3
+          maxLength: 60
+
+        Description:
+          type: string
+          maxLength: 2000
+
+        ExperienceLevel:
+          $ref: '#/components/schemas/JobListingExperienceLevel'
+
+    JobListingResponseDTO:
+      type: object
+
+      properties:
+        Id:
+          type: integer
+
+        Name:
+          type: string
+
+        Description:
+          type: string
+
+        ExperienceLevel:
+          $ref: '#/components/schemas/JobListingExperienceLevel'
+
+        company_id:
+          type: integer
+
+    JobApplicationRequestDTO:
+      type: object
+
+      required:
+        - user_id
+        - listing_id
+
+      properties:
+        user_id:
+          type: integer
+
+        listing_id:
+          type: integer
+
+    JobApplicationResponseDTO:
+      type: object
+
+      properties:
+        Id:
+          type: integer
+
+        user_id:
+          type: integer
+
+        listing_id:
+          type: integer
+
+    JobListingTechRequestDTO:
+      type: object
+
+      required:
+        - listing_id
+        - tech_id
+        - IsRequired
+
+      properties:
+        listing_id:
+          type: integer
+
+        tech_id:
+          type: integer
+
+        IsRequired:
+          type: boolean
+
+    JobListingTechResponseDTO:
+      type: object
+
+      properties:
+        id:
+          type: integer
+
+        listing_id:
+          type: integer
+
+        tech_id:
+          type: integer
+
+        IsRequired:
+          type: boolean
+
+    Tech:
+      type: object
+
+      required:
+        - Name
+        - TechCategory
+
+      properties:
+        Id:
+          type: integer
+
+        Name:
+          type: string
+
+        TechCategory:
+          $ref: '#/components/schemas/TechCategory'
+
+    CompanyType:
+      type: string
+      enum:
+        - PRIVATE
+        - PUBLIC
+
+    CompanyRemotePolicy:
+      type: string
+      enum:
+        - OFFICE
+        - HYBRID
+        - FULLY_REMOTE
+
+    JobListingExperienceLevel:
+      type: string
+      enum:
+        - JUNIOR
+        - MID
+        - SENIOR
+
+    TechCategory:
+      type: string
+      enum:
+        - FRONT_END
+        - BACK_END
+        - EMBEDDED
+        - DEV_OPS
+        - INFRASTRUCTURE
+        - QUALITY_ASSURANCE
+        - MOBILE
+        - DATA_SCIENCE
+
+    UserRole:
+      type: string
+      enum:
+        - USER
+        - ADMIN
