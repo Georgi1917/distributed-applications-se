@@ -88,8 +88,8 @@ public class JobApplicationService extends BaseService<JobApplication> implement
         JobListing needed_listing = _listing_repository.findById(entity.listing_id()).orElseThrow();
 
         JobApplication item = JobApplication.builder()
-                .Applicant(needed_user)
-                .JobListing(needed_listing).build();
+                .applicant(needed_user)
+                .jobListing(needed_listing).build();
 
         super.Save(item);
 

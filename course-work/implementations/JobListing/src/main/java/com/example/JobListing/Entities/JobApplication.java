@@ -19,10 +19,10 @@ public class JobApplication extends BaseEntity
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User Applicant;
+    private User applicant;
 
     @ManyToOne
     @JoinColumn(name = "job_listing_id")
-    private JobListing JobListing;
+    private JobListing jobListing;
 
 }

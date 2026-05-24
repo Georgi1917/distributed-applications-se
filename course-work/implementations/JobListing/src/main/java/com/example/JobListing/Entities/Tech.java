@@ -21,14 +21,14 @@ public class Tech extends BaseEntity
 
     @Column(nullable = false, unique = true)
     @NotBlank
-    private String Name;
+    private String name;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @NotNull
-    private TechCategory TechCategory;
+    private TechCategory techCategory;
 
-    @OneToMany(mappedBy = "Tech", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tech", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<JobListingTech> Listings = new HashSet<>();
+    private Set<JobListingTech> listings = new HashSet<>();
 
 }

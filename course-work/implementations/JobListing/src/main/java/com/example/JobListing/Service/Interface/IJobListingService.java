@@ -6,6 +6,8 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobListingResponseDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -15,7 +17,11 @@ public interface IJobListingService
 {
 
     @Async
-    CompletableFuture<List<JobListingResponseDTO>> GetAllListings();
+    CompletableFuture<Page<JobListingResponseDTO>> GetAllListings(Pageable pageable);
+    @Async
+    CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech(Pageable pageable, int tech_id);
+    @Async
+    CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser(Pageable pageable, int user_id);
     @Async
     CompletableFuture<JobListingResponseDTO> GetListing(int id);
     @Async

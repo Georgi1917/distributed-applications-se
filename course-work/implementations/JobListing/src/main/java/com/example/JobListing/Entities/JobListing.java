@@ -19,20 +19,20 @@ public class JobListing extends BaseEntity
 {
 
     @Column(nullable = false)
-    private String Name;
+    private String name;
     @Column(nullable = false)
-    private String Description;
+    private String description;
     @Enumerated(EnumType.STRING)
-    private JobListingExperienceLevel ExperienceLevel;
+    private JobListingExperienceLevel experienceLevel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    private Company Company;
+    private Company company;
 
-    @OneToMany(mappedBy = "JobListing", cascade = CascadeType.ALL)
-    private Set<JobApplication> Applications = new HashSet<>();
+    @OneToMany(mappedBy = "jobListing", cascade = CascadeType.ALL)
+    private Set<JobApplication> applications = new HashSet<>();
 
-    @OneToMany(mappedBy = "Listing", cascade = CascadeType.ALL)
-    private Set<JobListingTech> Techs = new HashSet<>();
+    @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
+    private Set<JobListingTech> techs = new HashSet<>();
 
 }

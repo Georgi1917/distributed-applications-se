@@ -5,11 +5,11 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDT
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("user/")
@@ -23,10 +23,24 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public List<UserResponseDTO> GetAllUsers(Authentication auth)
+    public Page<UserResponseDTO> GetAllUsers(
+            @RequestParam(required = false) Integer listing_id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean asc
+    )
     {
 
-        return _service.GetAllUsers().join();
+        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (listing_id != null)
+        {
+            return _service.GetUsersByListing(pageable, listing_id).join();
+        }
+
+        return _service.GetAllUsers(pageable).join();
 
     }
 

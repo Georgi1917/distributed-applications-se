@@ -3,6 +3,8 @@ package com.example.JobListing.Service.Implementation;
 import com.example.JobListing.Entities.BaseEntity;
 import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.IService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class BaseService<T extends BaseEntity> implements IService<T>
 {
 
-    private final IBaseRepository<T> _repository;
+    protected final IBaseRepository<T> _repository;
 
     public BaseService(IBaseRepository<T> repository)
     {
@@ -26,6 +28,14 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     {
 
         return CompletableFuture.completedFuture((List<T>) _repository.findAll());
+
+    }
+
+    @Async
+    public CompletableFuture<Page<T>> GetAllPageable(Pageable pageable)
+    {
+
+        return CompletableFuture.completedFuture(_repository.findAll(pageable));
 
     }
 

@@ -35,7 +35,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private UserRole role;
 
-    @OneToMany(mappedBy = "Applicant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL)
     private Set<JobApplication> applications = new HashSet<>();
 
     @Override

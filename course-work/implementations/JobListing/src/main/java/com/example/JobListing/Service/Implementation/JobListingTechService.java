@@ -85,8 +85,8 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
         Tech tech = _tech_repo.findById(entity.tech_id()).orElseThrow();
 
         JobListingTech item = JobListingTech.builder()
-                .Listing(job_listing)
-                .Tech(tech)
+                .listing(job_listing)
+                .tech(tech)
                 .IsRequired(entity.IsRequired()).build();
 
         super.Save(item);

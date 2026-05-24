@@ -5,6 +5,10 @@ import com.example.JobListing.Infrastructure.RequestDTOs.JobListingDTOs.JobListi
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobListingResponseDTO;
 import com.example.JobListing.Service.Implementation.JobListingService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +30,30 @@ public class JobListingController
     }
 
     @GetMapping("/")
-    public List<JobListingResponseDTO> GetAllListings()
+    public Page<JobListingResponseDTO> GetAllListings(
+            @RequestParam(required = false) Integer tech_id,
+            @RequestParam(required = false) Integer user_id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean asc
+    )
     {
 
-        return _service.GetAllListings().join();
+        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (user_id != null)
+        {
+            return _service.GetListingsByUser(pageable, user_id).join();
+        }
+
+        if (tech_id != null)
+        {
+            return _service.GetListingsByTech(pageable, tech_id).join();
+        }
+
+        return _service.GetAllListings(pageable).join();
 
     }
 

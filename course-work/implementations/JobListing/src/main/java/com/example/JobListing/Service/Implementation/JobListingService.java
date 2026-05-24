@@ -9,6 +9,8 @@ import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
 import com.example.JobListing.Repository.JobListingRepository;
 import com.example.JobListing.Service.Interface.IJobListingService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,25 +24,58 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 {
 
     private final CompanyRepository _company_repository;
+    private final JobListingRepository listing_repository;
 
     public JobListingService(JobListingRepository repository, CompanyRepository company_repository)
     {
         super(repository);
+        listing_repository = repository;
         _company_repository = company_repository;
     }
 
     @Async
-    public CompletableFuture<List<JobListingResponseDTO>> GetAllListings()
+    public CompletableFuture<Page<JobListingResponseDTO>> GetAllListings(Pageable pageable)
     {
 
-        return super.GetAll().thenApply(
-                items -> items.stream()
-                        .map(item -> JobListingResponseDTO.builder()
+        return super.GetAllPageable(pageable).thenApply(
+                page -> page.map(
+                        item -> JobListingResponseDTO.builder()
                                 .Id(item.getId())
                                 .Name(item.getName())
                                 .Description(item.getDescription())
                                 .ExperienceLevel(item.getExperienceLevel())
-                                .company_id(item.getCompany().getId()).build()).toList());
+                                .company_id(item.getCompany().getId()).build())
+        );
+
+    }
+
+    @Async
+    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech(Pageable pageable, int tech_id)
+    {
+
+        return CompletableFuture.completedFuture(listing_repository.findByJobListingTech_Tech_Id(tech_id, pageable).map(
+                item -> JobListingResponseDTO.builder()
+                        .Id(item.getId())
+                        .Name(item.getName())
+                        .Description(item.getDescription())
+                        .ExperienceLevel(item.getExperienceLevel())
+                        .company_id(item.getCompany().getId()).build()
+        ));
+
+    }
+
+    @Async
+    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser(Pageable pageable, int user_id)
+    {
+
+        return CompletableFuture.completedFuture(listing_repository.findByUser_User_Id(user_id, pageable).map(
+                item -> JobListingResponseDTO.builder()
+                        .Id(item.getId())
+                        .Name(item.getName())
+                        .Description(item.getDescription())
+                        .ExperienceLevel(item.getExperienceLevel())
+                        .company_id(item.getCompany().getId()).build()
+        ));
 
     }
 
@@ -64,10 +99,10 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
         Company company = _company_repository.findById(entity.company_id()).orElseThrow();
         JobListing item = JobListing.builder()
-                                    .Name(entity.Name())
-                                    .Description(entity.Description())
-                                    .ExperienceLevel(entity.ExperienceLevel())
-                                    .Company(company).build();
+                                    .name(entity.Name())
+                                    .description(entity.Description())
+                                    .experienceLevel(entity.ExperienceLevel())
+                                    .company(company).build();
 
         super.Save(item);
 

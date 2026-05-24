@@ -1,6 +1,8 @@
 package com.example.JobListing.Service.Interface;
 
 import com.example.JobListing.Entities.BaseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -11,6 +13,8 @@ public interface IService<T extends BaseEntity>
 
     @Async
     CompletableFuture<List<T>> GetAll();
+    @Async
+    public CompletableFuture<Page<T>> GetAllPageable(Pageable pageable);
     @Async
     CompletableFuture<T> GetItem(Integer id);
     @Async

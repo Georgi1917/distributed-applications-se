@@ -2,6 +2,8 @@ package com.example.JobListing.Service.Interface;
 
 import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -11,7 +13,7 @@ public interface ICompanyService
 {
 
     @Async
-    CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies();
+    CompletableFuture<Page<CompanyResponseDTO>> GetAllCompanies(Pageable pageable);
     @Async
     CompletableFuture<CompanyResponseDTO> GetCompany(int id);
     @Async

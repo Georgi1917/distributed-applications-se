@@ -5,6 +5,8 @@ import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequ
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
 import com.example.JobListing.Service.Interface.ICompanyService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +25,20 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     }
 
     @Async
-    public CompletableFuture<List<CompanyResponseDTO>> GetAllCompanies()
+    public CompletableFuture<Page<CompanyResponseDTO>> GetAllCompanies(Pageable pageable)
     {
 
-        return super.GetAll().thenApply(
-                items -> items.stream()
-                        .map(item -> CompanyResponseDTO.builder()
+        return super.GetAllPageable(pageable).thenApply(
+                page -> page.map(
+                        item -> CompanyResponseDTO.builder()
                                 .Id(item.getId())
                                 .CompanyName(item.getCompanyName())
                                 .Description(item.getDescription())
                                 .EmployeeCount(item.getEmployeeCount())
                                 .Type(item.getType())
                                 .CompanyRemotePolicy(item.getCompanyRemotePolicy())
-                                .IsHiring(item.isIsHiring()).build()).toList()
-        );
+                                .IsHiring(item.isHiring()).build())
+                );
 
     }
 
@@ -52,7 +54,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                         .EmployeeCount(company.getEmployeeCount())
                         .Type(company.getType())
                         .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                        .IsHiring(company.isIsHiring()).build()
+                        .IsHiring(company.isHiring()).build()
         );
 
     }
@@ -62,12 +64,12 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     {
 
         Company company = Company.builder()
-                                .CompanyName(entity.CompanyName())
-                                .Description(entity.Description())
-                                .EmployeeCount(entity.EmployeeCount())
-                                .Type(entity.Type())
-                                .CompanyRemotePolicy(entity.CompanyRemotePolicy())
-                                .IsHiring(entity.IsHiring()).build();
+                                .companyName(entity.CompanyName())
+                                .description(entity.Description())
+                                .employeeCount(entity.EmployeeCount())
+                                .type(entity.Type())
+                                .companyRemotePolicy(entity.CompanyRemotePolicy())
+                                .isHiring(entity.IsHiring()).build();
 
         super.Save(company);
 
@@ -78,7 +80,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                 .EmployeeCount(company.getEmployeeCount())
                 .Type(company.getType())
                 .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                .IsHiring(company.isIsHiring()).build());
+                .IsHiring(company.isHiring()).build());
 
     }
 
@@ -94,7 +96,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                     company.setEmployeeCount(entity.EmployeeCount());
                     company.setType(entity.Type());
                     company.setCompanyRemotePolicy(entity.CompanyRemotePolicy());
-                    company.setIsHiring(entity.IsHiring());
+                    company.setHiring(entity.IsHiring());
 
                     super.Save(company);
                     return company;
@@ -108,7 +110,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                         .EmployeeCount(company.getEmployeeCount())
                         .Type(company.getType())
                         .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                        .IsHiring(company.isIsHiring()).build()
+                        .IsHiring(company.isHiring()).build()
         );
 
     }
@@ -125,7 +127,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                         .EmployeeCount(company.getEmployeeCount())
                         .Type(company.getType())
                         .CompanyRemotePolicy(company.getCompanyRemotePolicy())
-                        .IsHiring(company.isIsHiring()).build()
+                        .IsHiring(company.isHiring()).build()
         );
 
     }

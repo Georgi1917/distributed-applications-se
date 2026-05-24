@@ -19,11 +19,11 @@ public class JobListingTech extends BaseEntity
 
     @ManyToOne
     @JoinColumn(name = "listing_id")
-    private JobListing Listing;
+    private JobListing listing;
 
     @ManyToOne
     @JoinColumn(name = "tech_id")
-    private Tech Tech;
+    private Tech tech;
 
     private boolean IsRequired;
 

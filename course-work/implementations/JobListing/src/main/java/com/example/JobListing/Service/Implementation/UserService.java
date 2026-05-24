@@ -6,6 +6,8 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDT
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.UserRepository;
 import com.example.JobListing.Service.Interface.IUserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,28 +20,44 @@ public class UserService extends BaseService<User> implements IUserService
 {
 
     private final PasswordEncoder _encoder;
+    private final UserRepository user_repo;
 
     public UserService(UserRepository repository, PasswordEncoder encoder)
     {
 
         super(repository);
+        user_repo = repository;
         _encoder = encoder;
 
     }
 
     @Async
-    public CompletableFuture<List<UserResponseDTO>> GetAllUsers()
+    public CompletableFuture<Page<UserResponseDTO>> GetAllUsers(Pageable pageable)
     {
 
-        return super.GetAll().thenApply(items ->
-                items.stream()
-                        .map(item ->
-                                UserResponseDTO.builder()
+        return super.GetAllPageable(pageable).thenApply(
+                page -> page.map(
+                        item -> UserResponseDTO.builder()
                                         .Id(item.getId())
                                         .Username(item.getUsername())
                                         .Email(item.getEmail())
                                         .Role(item.getRole()).build()
-                        ).toList());
+                )
+        );
+
+    }
+
+    @Async
+    public CompletableFuture<Page<UserResponseDTO>> GetUsersByListing(Pageable pageable, int listing_id)
+    {
+
+        return CompletableFuture.completedFuture(user_repo.findByListing(pageable, listing_id).map(
+                item -> UserResponseDTO.builder()
+                        .Id(item.getId())
+                        .Username(item.getUsername())
+                        .Email(item.getEmail())
+                        .Role(item.getRole()).build()
+        ));
 
     }
 

@@ -20,24 +20,24 @@ public class Company extends BaseEntity
 {
 
     @Column(nullable = false, unique = true)
-    private String CompanyName;
+    private String companyName;
     @Column(nullable = false)
-    private String Description;
-    private Integer EmployeeCount;
+    private String description;
+    private Integer employeeCount;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CompanyType Type;
+    private CompanyType type;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CompanyRemotePolicy CompanyRemotePolicy;
+    private CompanyRemotePolicy companyRemotePolicy;
     @Column(nullable = false)
-    private boolean IsHiring;
+    private boolean isHiring;
 
     @OneToMany(
-            mappedBy = "Company",
+            mappedBy = "company",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<JobListing> JobListings = new ArrayList<>();
+    private List<JobListing> jobListings = new ArrayList<>();
 
 }

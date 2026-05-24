@@ -3,6 +3,8 @@ package com.example.JobListing.Service.Interface;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -12,7 +14,9 @@ public interface IUserService
 {
 
     @Async
-    CompletableFuture<List<UserResponseDTO>> GetAllUsers();
+    CompletableFuture<Page<UserResponseDTO>> GetAllUsers(Pageable pageable);
+    @Async
+    CompletableFuture<Page<UserResponseDTO>> GetUsersByListing(Pageable pageable, int listing_id);
     @Async
     CompletableFuture<UserResponseDTO> GetUser(int id);
     @Async
