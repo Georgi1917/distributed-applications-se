@@ -5,6 +5,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequ
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
 import com.example.JobListing.Service.Interface.ICompanyService;
+import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -17,18 +18,23 @@ import java.util.concurrent.CompletableFuture;
 public class CompanyService extends BaseService<Company> implements ICompanyService
 {
 
+    private final CompanyRepository _repository;
+
     public CompanyService(CompanyRepository repository)
     {
 
         super(repository);
+        _repository = repository;
 
     }
 
     @Async
-    public CompletableFuture<Page<CompanyResponseDTO>> GetAllCompanies(Pageable pageable)
+    public CompletableFuture<Page<CompanyResponseDTO>> GetAllCompanies
+            (Pageable pageable, @Nullable String searchBy)
     {
 
-        return super.GetAllPageable(pageable).thenApply(
+        return CompletableFuture.completedFuture(_repository.findBySearchParameter(pageable, searchBy))
+                .thenApply(
                 page -> page.map(
                         item -> CompanyResponseDTO.builder()
                                 .Id(item.getId())

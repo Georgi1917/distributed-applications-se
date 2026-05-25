@@ -1,6 +1,24 @@
 package com.example.JobListing.Repository;
 
 import com.example.JobListing.Entities.Company;
+import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface CompanyRepository extends IBaseRepository<Company> {
+public interface CompanyRepository extends IBaseRepository<Company>
+{
+
+    @Query("""
+        SELECT DISTINCT c
+        FROM Company c
+        WHERE (:searchBy IS NULL 
+            OR LOWER(c.companyName) LIKE LOWER(CONCAT("%", :searchBy, "%"))
+            OR LOWER(c.description) LIKE LOWER(CONCAT("%", :searchBy, "%"))
+            OR LOWER(c.type) LIKE LOWER(CONCAT("%", :searchBy, "%"))
+            OR LOWER(c.companyRemotePolicy) LIKE LOWER(CONCAT("%", :searchBy, "%"))) 
+    """)
+    Page<Company> findBySearchParameter(Pageable pageable, @Param("searchBy") @Nullable String searchBy);
+
 }

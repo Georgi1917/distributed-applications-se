@@ -33,6 +33,7 @@ public class JobListingController
     public Page<JobListingResponseDTO> GetAllListings(
             @RequestParam(required = false) Integer tech_id,
             @RequestParam(required = false) Integer user_id,
+            @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -43,17 +44,19 @@ public class JobListingController
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        searchBy = (searchBy == null) ? "" : searchBy;
+
         if (user_id != null)
         {
-            return _service.GetListingsByUser(pageable, user_id).join();
+            return _service.GetListingsByUser(pageable, user_id, searchBy).join();
         }
 
         if (tech_id != null)
         {
-            return _service.GetListingsByTech(pageable, tech_id).join();
+            return _service.GetListingsByTech(pageable, tech_id, searchBy).join();
         }
 
-        return _service.GetAllListings(pageable).join();
+        return _service.GetAllListings(pageable, searchBy).join();
 
     }
 

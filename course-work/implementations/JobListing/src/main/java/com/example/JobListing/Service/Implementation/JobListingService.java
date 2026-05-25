@@ -9,6 +9,7 @@ import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
 import com.example.JobListing.Repository.JobListingRepository;
 import com.example.JobListing.Service.Interface.IJobListingService;
+import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -34,26 +35,30 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     }
 
     @Async
-    public CompletableFuture<Page<JobListingResponseDTO>> GetAllListings(Pageable pageable)
+    public CompletableFuture<Page<JobListingResponseDTO>> GetAllListings
+            (Pageable pageable, @Nullable String searchBy)
     {
 
-        return super.GetAllPageable(pageable).thenApply(
-                page -> page.map(
-                        item -> JobListingResponseDTO.builder()
-                                .Id(item.getId())
-                                .Name(item.getName())
-                                .Description(item.getDescription())
-                                .ExperienceLevel(item.getExperienceLevel())
-                                .company_id(item.getCompany().getId()).build())
-        );
+        return CompletableFuture.completedFuture(listing_repository.findBySearchParam(searchBy, pageable))
+                .thenApply(
+                        page -> page.map(
+                                item -> JobListingResponseDTO.builder()
+                                        .Id(item.getId())
+                                        .Name(item.getName())
+                                        .Description(item.getDescription())
+                                        .ExperienceLevel(item.getExperienceLevel())
+                                        .company_id(item.getCompany().getId()).build())
+                );
 
     }
 
     @Async
-    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech(Pageable pageable, int tech_id)
+    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech
+            (Pageable pageable, int tech_id, @Nullable String searchBy)
     {
 
-        return CompletableFuture.completedFuture(listing_repository.findByJobListingTech_Tech_Id(tech_id, pageable).map(
+        return CompletableFuture.completedFuture(listing_repository
+                .findByJobListingTech_Tech_Id(tech_id, searchBy, pageable).map(
                 item -> JobListingResponseDTO.builder()
                         .Id(item.getId())
                         .Name(item.getName())
@@ -65,10 +70,12 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     }
 
     @Async
-    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser(Pageable pageable, int user_id)
+    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser
+            (Pageable pageable, int user_id, @Nullable String searchBy)
     {
 
-        return CompletableFuture.completedFuture(listing_repository.findByUser_User_Id(user_id, pageable).map(
+        return CompletableFuture.completedFuture(listing_repository
+                .findByUser_User_Id(user_id, searchBy, pageable).map(
                 item -> JobListingResponseDTO.builder()
                         .Id(item.getId())
                         .Name(item.getName())

@@ -25,6 +25,7 @@ public class UserController {
     @GetMapping("/")
     public Page<UserResponseDTO> GetAllUsers(
             @RequestParam(required = false) Integer listing_id,
+            @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -35,12 +36,14 @@ public class UserController {
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        searchBy = (searchBy == null) ? "" : searchBy;
+
         if (listing_id != null)
         {
-            return _service.GetUsersByListing(pageable, listing_id).join();
+            return _service.GetUsersByListing(pageable, listing_id, searchBy).join();
         }
 
-        return _service.GetAllUsers(pageable).join();
+        return _service.GetAllUsers(pageable, searchBy).join();
 
     }
 

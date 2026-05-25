@@ -29,6 +29,7 @@ public class TechController
 
     @GetMapping("/")
     public Page<Tech> GetAll(
+            @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -38,7 +39,10 @@ public class TechController
 
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return _service.GetAllPageable(pageable).join();
+
+        searchBy = (searchBy == null) ? "" : searchBy;
+
+        return _service.GetTechsBySearchParam(pageable, searchBy).join();
 
     }
 

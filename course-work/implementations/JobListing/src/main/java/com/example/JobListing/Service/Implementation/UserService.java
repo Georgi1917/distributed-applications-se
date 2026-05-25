@@ -6,6 +6,7 @@ import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDT
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
 import com.example.JobListing.Repository.UserRepository;
 import com.example.JobListing.Service.Interface.IUserService;
+import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -32,10 +33,11 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<Page<UserResponseDTO>> GetAllUsers(Pageable pageable)
+    public CompletableFuture<Page<UserResponseDTO>> GetAllUsers
+            (Pageable pageable, @Nullable String searchBy)
     {
 
-        return super.GetAllPageable(pageable).thenApply(
+        return CompletableFuture.completedFuture(user_repo.findBySearchParam(pageable, searchBy)).thenApply(
                 page -> page.map(
                         item -> UserResponseDTO.builder()
                                         .Id(item.getId())
@@ -48,10 +50,11 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<Page<UserResponseDTO>> GetUsersByListing(Pageable pageable, int listing_id)
+    public CompletableFuture<Page<UserResponseDTO>> GetUsersByListing
+            (Pageable pageable, int listing_id, @Nullable String searchBy)
     {
 
-        return CompletableFuture.completedFuture(user_repo.findByListing(pageable, listing_id).map(
+        return CompletableFuture.completedFuture(user_repo.findByListing(pageable, listing_id, searchBy).map(
                 item -> UserResponseDTO.builder()
                         .Id(item.getId())
                         .Username(item.getUsername())

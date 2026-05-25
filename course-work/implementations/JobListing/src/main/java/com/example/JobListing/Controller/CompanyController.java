@@ -30,6 +30,7 @@ public class CompanyController
 
     @GetMapping("/")
     public Page<CompanyResponseDTO> GetAllCompanies(
+            @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -39,7 +40,10 @@ public class CompanyController
 
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return _service.GetAllCompanies(pageable).join();
+
+        searchBy = (searchBy == null) ? "" : searchBy;
+
+        return _service.GetAllCompanies(pageable, searchBy).join();
 
     }
 
