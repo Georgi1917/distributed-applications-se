@@ -6,6 +6,7 @@ import com.example.JobListing.Handler.CustomAuthEntryPoint;
 import com.example.JobListing.Service.Implementation.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -106,7 +107,35 @@ public class SecurityConfig
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
-                            .requestMatchers("/user/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/user/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/user/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/user/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/company/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/company/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/company/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/company/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/job_listing/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/job_listing/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/job_listing/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/job_listing/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/tech/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/tech/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/tech/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/tech/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/job_application/**").hasAnyRole("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.POST, "/job_application/**").hasAnyRole("USER", "ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/job_application/**").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.GET, "/job_listing_tech/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.POST, "/job_listing_tech/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/job_listing_tech/**").hasRole("ADMIN")
+
                             .anyRequest().authenticated()
                 )
                 .addFilterBefore(
