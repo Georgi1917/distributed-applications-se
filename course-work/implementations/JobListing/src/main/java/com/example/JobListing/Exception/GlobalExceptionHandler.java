@@ -1,5 +1,6 @@
 package com.example.JobListing.Exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -78,6 +79,26 @@ public class GlobalExceptionHandler
         String msg = "Invalid Value. Value must be in " + msgArr[msgArr.length - 1];
 
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), msg);
+
+    }
+
+    @ExceptionHandler(value = InvalidRequest.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidRequest
+            (InvalidRequest ex)
+    {
+
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+
+    }
+
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleDataIntegrityViolation
+            (DataIntegrityViolationException ex)
+    {
+
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Item already exists");
 
     }
 

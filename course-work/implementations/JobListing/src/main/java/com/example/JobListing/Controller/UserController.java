@@ -1,5 +1,6 @@
 package com.example.JobListing.Controller;
 
+import com.example.JobListing.Entities.Enums.UserRole;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +31,8 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean asc
+            @RequestParam(defaultValue = "true") boolean asc,
+            Authentication auth
     )
     {
 
@@ -42,6 +45,9 @@ public class UserController {
         {
             return _service.GetUsersByListing(pageable, listing_id, searchBy).join();
         }
+
+        System.out.println(auth.getName());
+        System.out.println(auth.getAuthorities().toArray()[0].toString().contentEquals("ROLE_ADMIN"));
 
         return _service.GetAllUsers(pageable, searchBy).join();
 
