@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends IBaseRepository<User>
 {
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
 
     @Query("""
         SELECT DISTINCT u
@@ -35,4 +36,18 @@ public interface UserRepository extends IBaseRepository<User>
             OR LOWER(u.role) LIKE LOWER(CONCAT("%", :searchBy, "%")))
     """)
     Page<User> findBySearchParam(Pageable pageable, @Param("searchBy") @Nullable String searchBy);
+
+    @Query("""
+        SELECT DISTINCT u
+        FROM User u
+        WHERE u.Id != :id AND u.username = :username
+    """)
+    Optional<User> findByUsernameWithoutId(String username, int id);
+
+    @Query("""
+        SELECT DISTINCT u
+        FROM User u
+        WHERE u.Id != :id AND u.email = :email
+    """)
+    Optional<User> findByEmailWithoutId(String email, int id);
 }

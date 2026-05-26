@@ -1,6 +1,7 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.BaseEntity;
+import com.example.JobListing.Exception.ElementNotFound;
 import com.example.JobListing.Repository.IBaseRepository;
 import com.example.JobListing.Service.Interface.IService;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,9 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     public CompletableFuture<T> GetItem(Integer id)
     {
 
-        T item = _repository.findById(id).orElseThrow();
+        T item = _repository.findById(id).orElseThrow(
+                () -> new ElementNotFound("Item Not Found.")
+        );
 
         return CompletableFuture.completedFuture(item);
 
@@ -63,27 +66,14 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     public CompletableFuture<T> Delete(int id)
     {
 
-        T to_delete = _repository.findById(id).orElseThrow();
+        T to_delete = _repository.findById(id).orElseThrow(
+                () -> new ElementNotFound("Item Not Found.")
+        );
 
         _repository.delete(to_delete);
 
         return CompletableFuture.completedFuture(to_delete);
 
     }
-
-    @Async
-    public CompletableFuture<T> Update(int id, T entity)
-    {
-
-        T existing_entity = _repository.findById(id).orElseThrow();
-
-        UpdateEntity(existing_entity, entity);
-        _repository.save(existing_entity);
-
-        return CompletableFuture.completedFuture(existing_entity);
-
-    }
-
-    protected abstract void UpdateEntity(T existing, T updated);
 
 }

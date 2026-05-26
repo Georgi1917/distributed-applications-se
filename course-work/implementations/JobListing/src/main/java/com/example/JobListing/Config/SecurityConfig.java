@@ -1,6 +1,8 @@
 package com.example.JobListing.Config;
 
 import com.example.JobListing.AuthFilter.JwtAuthFilter;
+import com.example.JobListing.Handler.CustomAccessDeniedHandler;
+import com.example.JobListing.Handler.CustomAuthEntryPoint;
 import com.example.JobListing.Service.Implementation.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,11 +30,18 @@ public class SecurityConfig
 {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final CustomAuthEntryPoint authEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public SecurityConfig(JwtAuthFilter filter)
+    public SecurityConfig
+            (JwtAuthFilter filter,
+             CustomAuthEntryPoint authEntryPoint,
+             CustomAccessDeniedHandler accessDeniedHandler)
     {
 
         jwtAuthFilter = filter;
+        this.authEntryPoint = authEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
 
     }
 
@@ -97,12 +106,16 @@ public class SecurityConfig
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
+                            .requestMatchers("/user/**").hasRole("ADMIN")
                             .anyRequest().authenticated()
                 )
                 .addFilterBefore(
                         jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class
-                );
+                )
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint(authEntryPoint)
+                          .accessDeniedHandler(accessDeniedHandler));
 
         return http.build();
     }

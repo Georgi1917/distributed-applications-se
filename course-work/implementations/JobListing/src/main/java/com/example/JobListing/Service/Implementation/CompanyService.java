@@ -1,6 +1,7 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.Company;
+import com.example.JobListing.Exception.ItemAlreadyExists;
 import com.example.JobListing.Infrastructure.RequestDTOs.CompanyDTOs.CompanyRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.CompanyResponseDTO;
 import com.example.JobListing.Repository.CompanyRepository;
@@ -69,6 +70,11 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     public CompletableFuture<CompanyResponseDTO> SaveCompany(CompanyRequestDTO entity)
     {
 
+        if (_repository.findBycompanyName(entity.CompanyName()).isPresent())
+        {
+            throw new ItemAlreadyExists("Company with that name already exists.");
+        }
+
         Company company = Company.builder()
                                 .companyName(entity.CompanyName())
                                 .description(entity.Description())
@@ -93,6 +99,11 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     @Async
     public CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity)
     {
+
+        if (_repository.findByNameWithoutId(entity.CompanyName(), id).isPresent())
+        {
+            throw new ItemAlreadyExists("Company with that name already exists!");
+        }
 
         return super.GetItem(id).thenApply(
                 company -> {
@@ -135,12 +146,6 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
                         .CompanyRemotePolicy(company.getCompanyRemotePolicy())
                         .IsHiring(company.isHiring()).build()
         );
-
-    }
-
-    @Override
-    protected void UpdateEntity(Company existing, Company updated)
-    {
 
     }
 

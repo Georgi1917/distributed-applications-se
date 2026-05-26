@@ -87,6 +87,23 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     }
 
     @Async
+    public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByCompany
+            (Pageable pageable, int company_id, @Nullable String searchBy)
+    {
+
+        return CompletableFuture.completedFuture(listing_repository.
+                findByCompany(company_id, searchBy, pageable).map(
+                        item -> JobListingResponseDTO.builder()
+                                .Id(item.getId())
+                                .Name(item.getName())
+                                .Description(item.getDescription())
+                                .ExperienceLevel(item.getExperienceLevel())
+                                .company_id(item.getCompany().getId()).build()
+                ));
+
+    }
+
+    @Async
     public CompletableFuture<JobListingResponseDTO> GetListing(int id)
     {
 
@@ -161,14 +178,6 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build()
         );
-
-    }
-
-    @Override
-    protected void UpdateEntity(JobListing existing, JobListing updated)
-    {
-
-
 
     }
 

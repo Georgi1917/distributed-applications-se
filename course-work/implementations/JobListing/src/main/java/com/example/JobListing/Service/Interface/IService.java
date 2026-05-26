@@ -21,7 +21,5 @@ public interface IService<T extends BaseEntity>
     CompletableFuture<T> Save(T entity);
     @Async
     CompletableFuture<T> Delete(int id);
-    @Async
-    CompletableFuture<T> Update(int id, T user);
 
 }

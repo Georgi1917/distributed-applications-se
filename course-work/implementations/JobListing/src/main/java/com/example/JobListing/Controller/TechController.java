@@ -1,6 +1,8 @@
 package com.example.JobListing.Controller;
 
 import com.example.JobListing.Entities.Tech;
+import com.example.JobListing.Infrastructure.RequestDTOs.TechDTOs.TechRequestDto;
+import com.example.JobListing.Infrastructure.ResponseDTOs.TechResponseDTO;
 import com.example.JobListing.Service.Implementation.TechService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -28,8 +30,9 @@ public class TechController
     }
 
     @GetMapping("/")
-    public Page<Tech> GetAll(
+    public Page<TechResponseDTO> GetAll(
             @RequestParam(required = false) String searchBy,
+            @RequestParam(required = false) Integer listing_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -41,6 +44,11 @@ public class TechController
         Pageable pageable = PageRequest.of(page, size, sort);
 
         searchBy = (searchBy == null) ? "" : searchBy;
+
+        if (listing_id != null)
+        {
+            return _service.GetTechsByListing(pageable, searchBy, listing_id).join();
+        }
 
         return _service.GetTechsBySearchParam(pageable, searchBy).join();
 
@@ -55,18 +63,19 @@ public class TechController
     }
 
     @PostMapping("/")
-    public Tech SaveTech(@Valid @RequestBody Tech entity)
+    public TechResponseDTO SaveTech(@Valid @RequestBody TechRequestDto entity)
     {
 
-        return _service.Save(entity).join();
+        return _service.SaveTech(entity).join();
 
     }
 
     @PutMapping("/update/{id}")
-    public Tech UpdateTech(@PathVariable int id, @Valid @RequestBody Tech entity)
+    public TechResponseDTO UpdateTech
+            (@PathVariable int id, @Valid @RequestBody TechRequestDto entity)
     {
 
-        return _service.Update(id, entity).join();
+        return _service.UpdateTech(id, entity).join();
 
     }
 

@@ -3,6 +3,7 @@ package com.example.JobListing.Service.Implementation;
 import com.example.JobListing.Entities.JobApplication;
 import com.example.JobListing.Entities.JobListing;
 import com.example.JobListing.Entities.User;
+import com.example.JobListing.Exception.ElementNotFound;
 import com.example.JobListing.Infrastructure.RequestDTOs.JobApplicationDTOs.JobApplicationRequestDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobApplicationResponseDTO;
 import com.example.JobListing.Repository.JobApplicationRepository;
@@ -84,8 +85,12 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     public CompletableFuture<JobApplicationResponseDTO> SaveApplication(JobApplicationRequestDTO entity)
     {
 
-        User needed_user = _user_repository.findById(entity.user_id()).orElseThrow();
-        JobListing needed_listing = _listing_repository.findById(entity.listing_id()).orElseThrow();
+        User needed_user = _user_repository.findById(entity.user_id()).orElseThrow(
+                () -> new ElementNotFound("Item Not Found.")
+        );
+        JobListing needed_listing = _listing_repository.findById(entity.listing_id()).orElseThrow(
+                () -> new ElementNotFound("Item Not Found.")
+        );
 
         JobApplication item = JobApplication.builder()
                 .applicant(needed_user)
@@ -110,14 +115,6 @@ public class JobApplicationService extends BaseService<JobApplication> implement
                         .user_id(item.getApplicant().getId())
                         .listing_id(item.getJobListing().getId()).build()
         );
-
-    }
-
-    @Override
-    protected void UpdateEntity(JobApplication existing, JobApplication updated)
-    {
-
-
 
     }
 

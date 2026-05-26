@@ -1,6 +1,7 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.User;
+import com.example.JobListing.Exception.ItemAlreadyExists;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.UserResponseDTO;
@@ -82,6 +83,15 @@ public class UserService extends BaseService<User> implements IUserService
     public CompletableFuture<UserResponseDTO> SaveUser(UserCreationDTO entity)
     {
 
+        if (user_repo.findByUsername(entity.username()).isPresent())
+        {
+            throw new ItemAlreadyExists("User with username already exists.");
+        }
+        if (user_repo.findByEmail(entity.email()).isPresent())
+        {
+            throw new ItemAlreadyExists("User with email already exists.");
+        }
+
         User user = User.builder()
                         .username(entity.username())
                         .email(entity.email())
@@ -102,6 +112,16 @@ public class UserService extends BaseService<User> implements IUserService
     @Async
     public CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity)
     {
+
+        if (user_repo.findByUsernameWithoutId(entity.username(), id).isPresent())
+        {
+            throw new ItemAlreadyExists("User with username already exists!");
+        }
+
+        if (user_repo.findByEmailWithoutId(entity.email(), id).isPresent())
+        {
+            throw new ItemAlreadyExists("User with email already exists!");
+        }
 
         return super.GetItem(id).thenApply(
                 user -> {
@@ -135,12 +155,6 @@ public class UserService extends BaseService<User> implements IUserService
                         .Email(user.getEmail())
                         .Role(user.getRole())
                         .build());
-
-    }
-
-    @Override
-    protected void UpdateEntity(User existing, User updated)
-    {
 
     }
 }

@@ -55,4 +55,20 @@ public interface JobListingRepository extends IBaseRepository<JobListing>
             Pageable pageable
     );
 
+    @Query("""
+        SELECT DISTINCT l
+        FROM JobListing l
+        JOIN l.company c
+        WHERE c.Id = :company_id
+            AND (:searchBy IS NULL
+                OR LOWER (l.name) LIKE LOWER(CONCAT("%", :searchBy, "%"))
+                OR LOWER(l.description) LIKE LOWER(CONCAT("%", :searchBy, "%"))
+                OR LOWER(l.experienceLevel) LIKE LOWER(CONCAT("%", :searchBy, "%")))
+    """)
+    Page<JobListing> findByCompany(
+            @Param("company_id") int company_id,
+            @Param("searchBy") String searchBy,
+            Pageable pageable
+    );
+
 }

@@ -1,6 +1,9 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.Tech;
+import com.example.JobListing.Exception.ItemAlreadyExists;
+import com.example.JobListing.Infrastructure.RequestDTOs.TechDTOs.TechRequestDto;
+import com.example.JobListing.Infrastructure.ResponseDTOs.TechResponseDTO;
 import com.example.JobListing.Repository.TechRepository;
 import com.example.JobListing.Service.Interface.ITechService;
 import jakarta.annotation.Nullable;
@@ -26,20 +29,78 @@ public class TechService extends BaseService<Tech> implements ITechService
     }
 
     @Async
-    public CompletableFuture<Page<Tech>> GetTechsBySearchParam
+    public CompletableFuture<Page<TechResponseDTO>> GetTechsBySearchParam
             (Pageable pageable, @Nullable String searchBy)
     {
 
-        return CompletableFuture.completedFuture(_repository.findBySearchParam(pageable, searchBy));
+        return CompletableFuture.completedFuture(_repository.findBySearchParam(pageable, searchBy).map(
+                item -> TechResponseDTO.builder()
+                        .id(item.getId())
+                        .name(item.getName())
+                        .techCategory(item.getTechCategory()).build()
+        ));
 
     }
 
-    @Override
-    protected void UpdateEntity(Tech existing, Tech updated)
+    @Async
+    public CompletableFuture<Page<TechResponseDTO>> GetTechsByListing
+            (Pageable pageable, @Nullable String searchBy, int listing_id)
     {
 
-        existing.setName(updated.getName());
-        existing.setTechCategory(updated.getTechCategory());
+        return CompletableFuture.completedFuture(_repository.findByListing(pageable, searchBy, listing_id).map(
+                item -> TechResponseDTO.builder()
+                        .id(item.getId())
+                        .name(item.getName())
+                        .techCategory(item.getTechCategory()).build()
+        ));
+
+    }
+
+    @Async
+    public CompletableFuture<TechResponseDTO> SaveTech(TechRequestDto entity)
+    {
+
+        if (_repository.findByName(entity.name()).isPresent())
+        {
+            throw new ItemAlreadyExists("Tech with that name already exists");
+        }
+
+        Tech tech = Tech.builder()
+                .name(entity.name())
+                .techCategory(entity.techCategory()).build();
+
+        super.Save(tech);
+
+        return CompletableFuture.completedFuture(TechResponseDTO.builder()
+                .id(tech.getId())
+                .name(tech.getName())
+                .techCategory(tech.getTechCategory()).build());
+
+    }
+
+    @Async
+    public CompletableFuture<TechResponseDTO> UpdateTech(int id, TechRequestDto entity)
+    {
+
+        if (_repository.findByNameWithoutId(id, entity.name()).isPresent())
+        {
+            throw new ItemAlreadyExists("Tech with that name already exists");
+        }
+
+        return super.GetItem(id).thenApply(
+                item -> {
+                    item.setName(entity.name());
+                    item.setTechCategory(entity.techCategory());
+
+                    super.Save(item);
+                    return item;
+
+                }
+        ).thenApply(
+                item -> TechResponseDTO.builder()
+                        .id(item.getId())
+                        .name(item.getName())
+                        .techCategory(item.getTechCategory()).build());
 
     }
 

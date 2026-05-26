@@ -33,6 +33,7 @@ public class JobListingController
     public Page<JobListingResponseDTO> GetAllListings(
             @RequestParam(required = false) Integer tech_id,
             @RequestParam(required = false) Integer user_id,
+            @RequestParam(required = false) Integer company_id,
             @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -54,6 +55,11 @@ public class JobListingController
         if (tech_id != null)
         {
             return _service.GetListingsByTech(pageable, tech_id, searchBy).join();
+        }
+
+        if(company_id != null)
+        {
+            return _service.GetListingsByCompany(pageable, company_id, searchBy).join();
         }
 
         return _service.GetAllListings(pageable, searchBy).join();

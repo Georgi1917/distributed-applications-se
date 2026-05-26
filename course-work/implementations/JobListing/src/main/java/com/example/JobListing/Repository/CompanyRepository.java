@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface CompanyRepository extends IBaseRepository<Company>
 {
 
@@ -20,5 +22,14 @@ public interface CompanyRepository extends IBaseRepository<Company>
             OR LOWER(c.companyRemotePolicy) LIKE LOWER(CONCAT("%", :searchBy, "%"))) 
     """)
     Page<Company> findBySearchParameter(Pageable pageable, @Param("searchBy") @Nullable String searchBy);
+
+    @Query("""
+        SELECT DISTINCT c
+        FROM Company c
+        WHERE c.Id != :id AND c.companyName = :companyName 
+    """)
+    Optional<Company> findByNameWithoutId(String companyName, int id);
+
+    Optional<Company> findBycompanyName(String companyName);
 
 }

@@ -27,6 +27,9 @@ public interface IJobListingService
     CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser
             (Pageable pageable, int user_id, @Nullable String searchBy);
     @Async
+    CompletableFuture<Page<JobListingResponseDTO>> GetListingsByCompany
+            (Pageable pageable, int company_id, @Nullable String searchBy);
+    @Async
     CompletableFuture<JobListingResponseDTO> GetListing(int id);
     @Async
     CompletableFuture<JobListingResponseDTO> SaveListing(JobListingCreateDTO entity);

@@ -1,6 +1,8 @@
 package com.example.JobListing.Service.Interface;
 
 import com.example.JobListing.Entities.Tech;
+import com.example.JobListing.Infrastructure.RequestDTOs.TechDTOs.TechRequestDto;
+import com.example.JobListing.Infrastructure.ResponseDTOs.TechResponseDTO;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +14,18 @@ public interface ITechService
 {
 
     @Async
-    public CompletableFuture<Page<Tech>> GetTechsBySearchParam
+    CompletableFuture<Page<TechResponseDTO>> GetTechsBySearchParam
             (Pageable pageable, @Nullable String searchBy);
+
+    @Async
+    CompletableFuture<Page<TechResponseDTO>> GetTechsByListing
+            (Pageable pageable, @Nullable String searchBy, int listing_id);
+
+    @Async
+    CompletableFuture<TechResponseDTO> SaveTech(TechRequestDto entity);
+    @Async
+    CompletableFuture<TechResponseDTO> UpdateTech(int id, TechRequestDto entity);
+
+
 
 }

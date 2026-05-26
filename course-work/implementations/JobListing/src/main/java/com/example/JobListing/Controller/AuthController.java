@@ -2,6 +2,7 @@ package com.example.JobListing.Controller;
 
 import com.example.JobListing.AuthService.JwtService;
 import com.example.JobListing.Entities.Enums.UserRole;
+import com.example.JobListing.Exception.InvalidLogin;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.LoginDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.RegisterDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
@@ -11,7 +12,9 @@ import com.example.JobListing.Service.Implementation.UserService;
 import jakarta.validation.Valid;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,23 +49,26 @@ public class AuthController
         System.out.println("Controller 1");
 
         try{
+
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             entity.username(),
                             entity.password()
                     )
             );
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            System.out.println("Controller 2");
+
+            String token = _service.GenerateToken(entity.username());
+
+            System.out.println("Controller 3");
+
+            return AuthResponseDTO.builder().token(token).build();
+
+        } catch (BadCredentialsException | UsernameNotFoundException e)
+        {
+            throw new InvalidLogin("Invalid username or password!");
         }
-
-        System.out.println("Controller 2");
-
-        String token = _service.GenerateToken(entity.username());
-
-        System.out.println("Controller 3");
-
-        return AuthResponseDTO.builder().token(token).build();
 
     }
 
