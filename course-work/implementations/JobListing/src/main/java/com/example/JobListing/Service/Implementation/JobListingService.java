@@ -2,6 +2,7 @@ package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.Company;
 import com.example.JobListing.Entities.JobListing;
+import com.example.JobListing.Exception.ElementNotFound;
 import com.example.JobListing.Infrastructure.RequestDTOs.JobListingDTOs.JobListingCreateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.JobListingDTOs.JobListingUpdateDTO;
 import com.example.JobListing.Infrastructure.ResponseDTOs.JobListingResponseDTO;
@@ -121,7 +122,9 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     public CompletableFuture<JobListingResponseDTO> SaveListing(@RequestBody JobListingCreateDTO entity)
     {
 
-        Company company = _company_repository.findById(entity.company_id()).orElseThrow();
+        Company company = _company_repository.findById(entity.company_id()).orElseThrow(
+                () -> new ElementNotFound("Company does not exist.")
+        );
         JobListing item = JobListing.builder()
                                     .name(entity.Name())
                                     .description(entity.Description())

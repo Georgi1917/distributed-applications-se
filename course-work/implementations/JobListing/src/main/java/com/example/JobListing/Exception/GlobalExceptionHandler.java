@@ -1,7 +1,15 @@
 package com.example.JobListing.Exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler
@@ -26,6 +34,51 @@ public class GlobalExceptionHandler
     public @ResponseBody ErrorResponse handleInvalidLogin(InvalidLogin ex)
     {
         return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleInvalidArgument(
+            MethodArgumentNotValidException ex
+    )
+    {
+
+        Map<String, String> errors = new HashMap<>();
+
+        BindingResult res = ex.getBindingResult();
+
+        if (res.hasErrors())
+        {
+
+            for (FieldError error : res.getFieldErrors())
+            {
+
+                errors.put(
+                        error.getField(),
+                        error.getDefaultMessage()
+                );
+
+            }
+
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errors);
+
+    }
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleInvalidEnumValue
+            (HttpMessageNotReadableException ex)
+    {
+
+        String[] msgArr = ex.getMessage().split(": ");
+        String msg = "Invalid Value. Value must be in " + msgArr[msgArr.length - 1];
+
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), msg);
+
     }
 
 }
