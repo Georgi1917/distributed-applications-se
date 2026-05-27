@@ -55,10 +55,10 @@ public class TechController
     }
 
     @GetMapping("/{id}")
-    public Tech GetTech(@PathVariable int id)
+    public TechResponseDTO GetTech(@PathVariable int id)
     {
 
-        return _service.GetItem(id).join();
+        return _service.GetTech(id).join();
 
     }
 

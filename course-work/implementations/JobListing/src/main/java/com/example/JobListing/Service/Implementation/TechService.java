@@ -57,6 +57,19 @@ public class TechService extends BaseService<Tech> implements ITechService
     }
 
     @Async
+    public CompletableFuture<TechResponseDTO> GetTech(int id)
+    {
+
+        return super.GetItem(id).thenApply(
+                item -> TechResponseDTO.builder()
+                        .id(item.getId())
+                        .name(item.getName())
+                        .techCategory(item.getTechCategory()).build()
+        );
+
+    }
+
+    @Async
     public CompletableFuture<TechResponseDTO> SaveTech(TechRequestDto entity)
     {
 

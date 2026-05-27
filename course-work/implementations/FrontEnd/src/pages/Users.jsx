@@ -1,0 +1,95 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUsers } from '../api.js';
+import SearchSortBar from '../components/SearchSortBar.jsx';
+import Pagination from '../components/Pagination.jsx';
+
+export default function Users() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchBy, setSearchBy] = useState('');
+  const [sortBy, setSortBy] = useState('id');
+  const [asc, setAsc] = useState(true);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const navigate = useNavigate();
+
+  const fetchUsers = (pageIndex = 0) => {
+    setLoading(true);
+    setError(null);
+    getUsers({ page: pageIndex, searchBy, sortBy, asc, size: 8 })
+      .then((data) => {
+        setUsers(data.content || []);
+        setTotalPages(data.page?.totalPages ?? 0);
+        setPage(data.page?.number ?? pageIndex);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchUsers(0);
+  };
+
+  const handlePageChange = (newPage) => {
+    fetchUsers(newPage);
+  };
+
+  return (
+    <section className="page">
+      <h1>Users</h1>
+      <p className="page-intro">See user accounts and roles from the backend.</p>
+      <SearchSortBar
+        label="users"
+        searchValue={searchBy}
+        onSearchChange={setSearchBy}
+        sortValue={sortBy}
+        onSortChange={setSortBy}
+        ascValue={asc}
+        onAscChange={setAsc}
+        onSubmit={handleSubmit}
+        sortOptions={[
+          { value: 'id', label: 'ID' },
+          { value: 'email', label: 'Email' },
+          { value: 'username', label: 'Username' },
+          { value: 'role', label: 'Role' }
+        ]}
+      />
+      {loading && <div className="status">Loading users…</div>}
+      {error && <div className="status status-error">{error}</div>}
+      {!loading && !error && (
+        <>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.Id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/users/${user.Id}`)}>
+                    <td>{user.Id}</td>
+                    <td>{user.Email}</td>
+                    <td>{user.Username}</td>
+                    <td>{user.Role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+        </>
+      )}
+    </section>
+  );
+}

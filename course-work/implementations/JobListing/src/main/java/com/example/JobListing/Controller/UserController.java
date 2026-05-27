@@ -31,8 +31,7 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean asc,
-            Authentication auth
+            @RequestParam(defaultValue = "true") boolean asc
     )
     {
 
@@ -45,9 +44,6 @@ public class UserController {
         {
             return _service.GetUsersByListing(pageable, listing_id, searchBy).join();
         }
-
-        System.out.println(auth.getName());
-        System.out.println(auth.getAuthorities().toArray()[0].toString().contentEquals("ROLE_ADMIN"));
 
         return _service.GetAllUsers(pageable, searchBy).join();
 
