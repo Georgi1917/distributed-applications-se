@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getJobListingDetail, getTechsByListing, getUsersByListing } from '../api.js';
+import Pagination from '../components/Pagination.jsx';
 
 export default function JobListingDetail() {
   const { id } = useParams();
@@ -8,6 +9,11 @@ export default function JobListingDetail() {
   const [listing, setListing] = useState(null);
   const [techs, setTechs] = useState([]);
   const [users, setUsers] = useState([]);
+  const [techsPage, setTechsPage] = useState(0);
+  const [techsTotalPages, setTechsTotalPages] = useState(0);
+  const [usersPage, setUsersPage] = useState(0);
+  const [usersTotalPages, setUsersTotalPages] = useState(0);
+  const pageSize = 2;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,10 +24,14 @@ export default function JobListingDetail() {
         setError(null);
         const listingData = await getJobListingDetail(id);
         setListing(listingData);
-        const techsData = await getTechsByListing(id);
-        setTechs(techsData.content || []);
-        const usersData = await getUsersByListing(id);
-        setUsers(usersData.content || []);
+        const techsData = await getTechsByListing(id, { page: techsPage, size: pageSize });
+        setTechs(techsData?.content || []);
+        setTechsTotalPages(techsData?.page?.totalPages ?? 0);
+        setTechsPage(techsData?.page?.number ?? techsPage);
+        const usersData = await getUsersByListing(id, { page: usersPage, size: pageSize });
+        setUsers(usersData?.content || []);
+        setUsersTotalPages(usersData?.page?.totalPages ?? 0);
+        setUsersPage(usersData?.page?.number ?? usersPage);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -29,7 +39,7 @@ export default function JobListingDetail() {
       }
     };
     loadData();
-  }, [id]);
+  }, [id, techsPage, usersPage]);
 
   if (loading) return <div className="page"><p>Loading...</p></div>;
   if (error) return <div className="page"><div className="status status-error">{error}</div></div>;
@@ -50,9 +60,10 @@ export default function JobListingDetail() {
               <span className="detail-meta-value">{listing.ExperienceLevel || 'N/A'}</span>
             </div>
           </div>
-          {listing.description && (
-            <div style={{ marginTop: '1rem', color: '#475569' }}>
-              {listing.description}
+          {listing.Description && (
+            <div style={{ marginTop: '1.5rem', color: '#475569' }}>
+              <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem' }}>Description</h2>
+              <p style={{ margin: 0, lineHeight: 1.6 }}>{listing.Description}</p>
             </div>
           )}
         </div>
@@ -80,6 +91,9 @@ export default function JobListingDetail() {
             ))}
           </div>
         )}
+        {techsTotalPages > 1 && (
+          <Pagination page={techsPage} totalPages={techsTotalPages} onPageChange={(p) => setTechsPage(p)} />
+        )}
       </div>
 
       <div className="detail-section">
@@ -103,6 +117,9 @@ export default function JobListingDetail() {
               </Link>
             ))}
           </div>
+        )}
+        {usersTotalPages > 1 && (
+          <Pagination page={usersPage} totalPages={usersTotalPages} onPageChange={(p) => setUsersPage(p)} />
         )}
       </div>
     </div>

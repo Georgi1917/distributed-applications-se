@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getUserDetail, getJobListingsByUser } from '../api.js';
+import Pagination from '../components/Pagination.jsx';
 
 export default function UserDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [jobListings, setJobListings] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 2;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,8 +21,10 @@ export default function UserDetail() {
         setError(null);
         const userData = await getUserDetail(id);
         setUser(userData);
-        const jobsData = await getJobListingsByUser(id);
-        setJobListings(jobsData.content || []);
+        const jobsData = await getJobListingsByUser(id, { page, size: pageSize });
+        setJobListings(jobsData?.content || []);
+        setTotalPages(jobsData?.page?.totalPages ?? 0);
+        setPage(jobsData?.page?.number ?? page);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,7 +32,7 @@ export default function UserDetail() {
       }
     };
     loadData();
-  }, [id]);
+  }, [id, page]);
 
   if (loading) return <div className="page"><p>Loading...</p></div>;
   if (error) return <div className="page"><div className="status status-error">{error}</div></div>;
@@ -77,6 +83,9 @@ export default function UserDetail() {
               </Link>
             ))}
           </div>
+        )}
+        {totalPages > 1 && (
+          <Pagination page={page} totalPages={totalPages} onPageChange={(p) => setPage(p)} />
         )}
       </div>
     </div>

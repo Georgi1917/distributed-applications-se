@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getJobListings } from '../api.js';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import SearchSortBar from '../components/SearchSortBar.jsx';
 import Pagination from '../components/Pagination.jsx';
 
@@ -12,6 +14,7 @@ export default function JobListings() {
   const [asc, setAsc] = useState(true);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const { isAdmin } = useAuth();
 
   const fetchJobListings = (pageIndex = 0) => {
     setLoading(true);
@@ -41,7 +44,12 @@ export default function JobListings() {
 
   return (
     <section className="page">
-      <h1>Job Listings</h1>
+      <div className="page-header">
+        <h1>Job Listings</h1>
+        <div className="page-actions">
+          {isAdmin && <Link to="/job-listings/create" className="btn btn-primary">Create Listing</Link>}
+        </div>
+      </div>
       <p className="page-intro">Review job listings returned by the backend API.</p>
       <SearchSortBar
         label="job listings"
@@ -68,9 +76,9 @@ export default function JobListings() {
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Description</th>
                   <th>Experience</th>
                   <th>Company ID</th>
+                  {isAdmin && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -78,9 +86,14 @@ export default function JobListings() {
                   <tr key={job.Id} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/job-listings/${job.Id}`}>
                     <td>{job.Id}</td>
                     <td>{job.Name}</td>
-                    <td>{job.Description}</td>
                     <td>{job.ExperienceLevel}</td>
                     <td>{job.company_id}</td>
+                    {isAdmin && (
+                      <td style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Link to={`/job-listings/${job.Id}/edit`} className="btn btn-small" onClick={(e) => e.stopPropagation()} style={{ background: '#3b82f6', color: 'white' }}>Edit</Link>
+                        <Link to={`/job-listings/${job.Id}/delete`} className="btn btn-danger btn-small" onClick={(e) => e.stopPropagation()}>Delete</Link>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

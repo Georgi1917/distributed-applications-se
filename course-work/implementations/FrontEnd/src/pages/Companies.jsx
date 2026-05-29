@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCompanies } from '../api.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import SearchSortBar from '../components/SearchSortBar.jsx';
 import Pagination from '../components/Pagination.jsx';
 
@@ -13,6 +14,7 @@ export default function Companies() {
   const [asc, setAsc] = useState(true);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const { isAdmin } = useAuth();
 
   const fetchCompanies = (pageIndex = 0) => {
     setLoading(true);
@@ -42,7 +44,12 @@ export default function Companies() {
 
   return (
     <section className="page">
-      <h1>All Companies</h1>
+      <div className="page-header">
+        <h1>All Companies</h1>
+        <div className="page-actions">
+          {isAdmin && <Link to="/companies/create" className="btn btn-primary">Create Company</Link>}
+        </div>
+      </div>
       <p className="page-intro">This page loads company data from the backend.</p>
       <SearchSortBar
         label="companies"
@@ -72,11 +79,11 @@ export default function Companies() {
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Description</th>
                   <th>Employees</th>
                   <th>Type</th>
                   <th>Remote</th>
                   <th>Hiring</th>
+                  {isAdmin && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -84,11 +91,16 @@ export default function Companies() {
                   <tr key={company.Id} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/companies/${company.Id}`}>
                     <td>{company.Id}</td>
                     <td>{company.CompanyName}</td>
-                    <td>{company.Description}</td>
                     <td>{company.EmployeeCount}</td>
                     <td>{company.Type}</td>
                     <td>{company.CompanyRemotePolicy}</td>
                     <td>{company.IsHiring ? 'Yes' : 'No'}</td>
+                    {isAdmin && (
+                      <td style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Link to={`/companies/${company.Id}/edit`} className="btn btn-small" onClick={(e) => e.stopPropagation()} style={{ background: '#3b82f6', color: 'white' }}>Edit</Link>
+                        <Link to={`/companies/${company.Id}/delete`} className="btn btn-danger btn-small" onClick={(e) => e.stopPropagation()}>Delete</Link>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

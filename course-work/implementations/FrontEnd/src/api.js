@@ -8,8 +8,19 @@ const parseJson = async (response) => {
   }
 };
 
-const fetchJson = async (path) => {
-  const response = await fetch(path);
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('auth_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+const fetchJson = async (path, options = {}) => {
+  const response = await fetch(path, {
+    ...options,
+    headers: {
+      ...getAuthHeaders(),
+      ...options.headers
+    }
+  });
   if (!response.ok) {
     const error = await parseJson(response);
     throw new Error(error?.message ?? `Request failed: ${response.status} ${response.statusText}`);
@@ -69,18 +80,53 @@ export const getTechDetail = (id) => fetchJson(`/tech/${id}`);
 
 export const getUserDetail = (id) => fetchJson(`/user/${id}`);
 
-export const getJobListingsByCompany = (companyId) =>
-  fetchJson(`/job_listing/?company_id=${companyId}&size=8`);
+export const getUserByUsername = (username) => fetchJson(`/user/username/${username}`);
 
-export const getTechsByListing = (listingId) =>
-  fetchJson(`/tech/?listing_id=${listingId}&size=8`);
+// Create / Update / Delete helpers
+const sendJson = async (path, method, body) => {
+  const response = await fetch(path, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const error = await parseJson(response);
+    throw new Error(error?.message ?? `Request failed: ${response.status}`);
+  }
+  return parseJson(response);
+};
 
-export const getUsersByListing = (listingId) =>
-  fetchJson(`/user/?listing_id=${listingId}&size=8`);
+export const createCompany = (data) => sendJson('/company/', 'POST', data);
+export const updateCompany = (id, data) => sendJson(`/company/update/${id}`, 'PUT', data);
+export const deleteCompany = (id) => sendJson(`/company/delete/${id}`, 'DELETE');
 
-export const getJobListingsByUser = (userId) =>
-  fetchJson(`/job_listing/?user_id=${userId}&size=8`);
+export const createJobListing = (data) => sendJson('/job_listing/', 'POST', data);
+export const updateJobListing = (id, data) => sendJson(`/job_listing/update/${id}`, 'PUT', data);
+export const deleteJobListing = (id) => sendJson(`/job_listing/delete/${id}`, 'DELETE');
 
-export const getJobListingsByTech = (techId) =>
-  fetchJson(`/job_listing/?tech_id=${techId}&size=100`);
+export const createTech = (data) => sendJson('/tech/', 'POST', data);
+export const updateTech = (id, data) => sendJson(`/tech/update/${id}`, 'PUT', data);
+export const deleteTech = (id) => sendJson(`/tech/delete/${id}`, 'DELETE');
+
+export const createUser = (data) => sendJson('/user/', 'POST', data);
+export const updateUser = (id, data) => sendJson(`/user/update/${id}`, 'PUT', data);
+export const deleteUser = (id) => sendJson(`/user/delete/${id}`, 'DELETE');
+
+export const getJobListingsByCompany = (companyId, { page = 0, size = 2 } = {}) =>
+  fetchJson(`/job_listing/?company_id=${companyId}&page=${page}&size=${size}`);
+
+export const getTechsByListing = (listingId, { page = 0, size = 2 } = {}) =>
+  fetchJson(`/tech/?listing_id=${listingId}&page=${page}&size=${size}`);
+
+export const getUsersByListing = (listingId, { page = 0, size = 2 } = {}) =>
+  fetchJson(`/user/?listing_id=${listingId}&page=${page}&size=${size}`);
+
+export const getJobListingsByUser = (userId, { page = 0, size = 2 } = {}) =>
+  fetchJson(`/job_listing/?user_id=${userId}&page=${page}&size=${size}`);
+
+export const getJobListingsByTech = (techId, { page = 0, size = 2 } = {}) =>
+  fetchJson(`/job_listing/?tech_id=${techId}&page=${page}&size=${size}`);
 

@@ -1,6 +1,7 @@
 package com.example.JobListing.Service.Implementation;
 
 import com.example.JobListing.Entities.User;
+import com.example.JobListing.Exception.ElementNotFound;
 import com.example.JobListing.Exception.ItemAlreadyExists;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UpdateDTO;
 import com.example.JobListing.Infrastructure.RequestDTOs.UserDTOs.UserCreationDTO;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -78,6 +80,24 @@ public class UserService extends BaseService<User> implements IUserService
                         .Email(user.getEmail())
                         .Role(user.getRole())
                         .build());
+
+    }
+
+    @Async
+    public CompletableFuture<UserResponseDTO> GetUserByUsername(String username)
+    {
+
+        User user = user_repo.findByUsername(username).orElseThrow(
+                () -> new ElementNotFound("User with that username does not exist")
+        );
+
+        return CompletableFuture.completedFuture(
+                UserResponseDTO.builder()
+                        .Id(user.getId())
+                        .Username(user.getUsername())
+                        .Email(user.getEmail())
+                        .Role(user.getRole()).build()
+        );
 
     }
 

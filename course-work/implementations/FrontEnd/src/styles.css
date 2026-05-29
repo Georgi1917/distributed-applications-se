@@ -363,6 +363,96 @@ tbody tr:hover {
   cursor: not-allowed;
 }
 
+/* Unified button styles used across lists and forms */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  background: #eef2ff;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  color: white;
+  border-color: rgba(37,99,235,0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+}
+
+.btn-danger {
+  background: linear-gradient(180deg, #fb7185, #ef4444);
+  color: white;
+  border-color: rgba(239,68,68,0.15);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(180deg, #f43f5e, #dc2626);
+}
+
+.btn-small {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.78rem;
+  border-radius: 0.5rem;
+}
+
+.logout-btn {
+  background: linear-gradient(180deg, #8b5cf6, #7c3aed) !important;
+  color: white !important;
+  padding: 0.55rem 1rem !important;
+  border: none !important;
+  border-radius: 0.6rem !important;
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+  cursor: pointer !important;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease !important;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(180deg, #7c3aed, #6d28d9) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.25) !important;
+}
+
+.logout-btn:active {
+  transform: translateY(0) !important;
+}
+
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .form-link {
   margin-top: 1.5rem;
   text-align: center;
@@ -389,6 +479,64 @@ tbody tr:hover {
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+/* Improved Create/Edit form layout used by pages like CompanyCreate/Edit */
+.form {
+  width: 100%;
+  max-width: 760px;
+  margin: 1rem auto 2rem;
+  padding: 1.25rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  display: grid;
+  gap: 1rem;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.form input[type="text"], .form input[type="number"], .form input[type="email"], .form input[type="password"], .form textarea, .form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 0.75rem;
+  background: #fbfdff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.12s ease;
+}
+
+.form textarea { min-height: 110px; resize: vertical; }
+
+.form input:focus, .form textarea:focus, .form select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.08);
+  background: white;
+}
+
+ .checkbox-row {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+   margin-top: 0.5rem;
+ }
+ 
+ .checkbox-row input {
+   width: auto;
+   margin: 0;
+ }
+ 
   font-size: 0.9rem;
 }
 

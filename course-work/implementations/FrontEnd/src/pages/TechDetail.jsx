@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getTechDetail, getJobListingsByTech } from '../api.js';
+import Pagination from '../components/Pagination.jsx';
 
 export default function TechDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [tech, setTech] = useState(null);
   const [jobListings, setJobListings] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 2;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,8 +21,10 @@ export default function TechDetail() {
         setError(null);
         const techData = await getTechDetail(id);
         setTech(techData);
-        const jobsData = await getJobListingsByTech(id);
+        const jobsData = await getJobListingsByTech(id, { page, size: pageSize });
         setJobListings(jobsData?.content || []);
+        setTotalPages(jobsData?.page?.totalPages ?? 0);
+        setPage(jobsData?.page?.number ?? page);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,7 +32,7 @@ export default function TechDetail() {
       }
     };
     loadData();
-  }, [id]);
+  }, [id, page]);
 
   if (loading) return <div className="page"><p>Loading...</p></div>;
   if (error) return <div className="page"><div className="status status-error">{error}</div></div>;
@@ -73,6 +79,9 @@ export default function TechDetail() {
               </Link>
             ))}
           </div>
+        )}
+        {totalPages > 1 && (
+          <Pagination page={page} totalPages={totalPages} onPageChange={(p) => setPage(p)} />
         )}
       </div>
     </div>

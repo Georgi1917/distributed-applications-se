@@ -22,6 +22,8 @@ public interface IUserService
     @Async
     CompletableFuture<UserResponseDTO> GetUser(int id);
     @Async
+    CompletableFuture<UserResponseDTO> GetUserByUsername(String username);
+    @Async
     CompletableFuture<UserResponseDTO> SaveUser(UserCreationDTO entity);
     @Async
     CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity);

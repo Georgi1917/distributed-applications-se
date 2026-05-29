@@ -57,6 +57,12 @@ public class UserController {
 
     }
 
+    @GetMapping("username/{username}")
+    public UserResponseDTO GetUserByUsername(@PathVariable String username)
+    {
+        return _service.GetUserByUsername(username).join();
+    }
+
     @PostMapping("/")
     public UserResponseDTO SaveUser(@Valid @RequestBody UserCreationDTO user)
     {
