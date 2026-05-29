@@ -23,9 +23,21 @@ export default defineConfig({
       '/tech/': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        headers: { origin: 'http://localhost:8080' }
+        headers: { origin: 'http://localhost:8080' },
+        bypass: (req) => {
+          if (req.headers.accept?.includes('text/html')) {
+            return req.url;
+          }
+          return undefined;
+        }
       },
       '/auth/': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        headers: { origin: 'http://localhost:8080' }
+      }
+      ,
+      '/job_application/': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         headers: { origin: 'http://localhost:8080' }

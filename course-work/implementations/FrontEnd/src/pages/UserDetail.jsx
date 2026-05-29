@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getUserDetail, getJobListingsByUser } from '../api.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { getUserDetail, getJobListingsByUser, getJobApplicationsByUser, deleteJobApplication } from '../api.js';
 import Pagination from '../components/Pagination.jsx';
 
 export default function UserDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
   const [user, setUser] = useState(null);
   const [jobListings, setJobListings] = useState([]);
+  const [jobApplications, setJobApplications] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const pageSize = 2;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -25,6 +29,8 @@ export default function UserDetail() {
         setJobListings(jobsData?.content || []);
         setTotalPages(jobsData?.page?.totalPages ?? 0);
         setPage(jobsData?.page?.number ?? page);
+        const applications = await getJobApplicationsByUser(Number(id));
+        setJobApplications(applications || []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -68,20 +74,50 @@ export default function UserDetail() {
           </div>
         ) : (
           <div className="detail-list">
-            {jobListings.map((job) => (
-              <Link
-                key={job.Id}
-                to={`/job-listings/${job.Id}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <div className="detail-item">
-                  <p className="detail-item-title">{job.Name}</p>
-                  <p className="detail-item-text">
-                    Experience: {job.ExperienceLevel}
-                  </p>
+            {jobListings.map((job) => {
+              const application = jobApplications.find((app) => String(app.listing_id) === String(job.Id));
+              return (
+                <div key={job.Id} className="detail-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Link
+                    to={`/job-listings/${job.Id}`}
+                    style={{ textDecoration: 'none', color: 'inherit', flex: 1 }}
+                  >
+                    <div>
+                      <p className="detail-item-title">{job.Name}</p>
+                      <p className="detail-item-text">
+                        Experience: {job.ExperienceLevel}
+                      </p>
+                    </div>
+                  </Link>
+                  {isAdmin && application && (
+                    <button
+                      className="btn btn-danger btn-small"
+                      onClick={async () => {
+                        setDeletingId(application.Id);
+                        try {
+                          await deleteJobApplication(application.Id);
+                          const updatedApps = await getJobApplicationsByUser(Number(id));
+                          setJobApplications(updatedApps || []);
+                          // refresh job listings page if needed
+                          const jobsData = await getJobListingsByUser(id, { page, size: pageSize });
+                          setJobListings(jobsData?.content || []);
+                          setTotalPages(jobsData?.page?.totalPages ?? 0);
+                          setPage(jobsData?.page?.number ?? page);
+                        } catch (err) {
+                          setError(err.message);
+                        } finally {
+                          setDeletingId(null);
+                        }
+                      }}
+                      disabled={deletingId === application.Id}
+                      style={{ marginLeft: '1rem' }}
+                    >
+                      {deletingId === application.Id ? 'Deleting…' : 'Delete'}
+                    </button>
+                  )}
                 </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
         {totalPages > 1 && (

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import NavBar from './components/NavBar.jsx';
+import RequireAuth from './components/RequireAuth.jsx';
 import Home from './pages/Home.jsx';
 import Companies from './pages/Companies.jsx';
 import JobListings from './pages/JobListings.jsx';
@@ -35,26 +36,26 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/companies" element={<Companies />} />
-              <Route path="/companies/create" element={<CompanyCreate />} />
+              <Route path="/companies/create" element={<RequireAuth adminOnly><CompanyCreate /></RequireAuth>} />
               <Route path="/companies/:id" element={<CompanyDetail />} />
-              <Route path="/companies/:id/edit" element={<CompanyEdit />} />
-              <Route path="/companies/:id/delete" element={<CompanyDelete />} />
+              <Route path="/companies/:id/edit" element={<RequireAuth adminOnly><CompanyEdit /></RequireAuth>} />
+              <Route path="/companies/:id/delete" element={<RequireAuth adminOnly><CompanyDelete /></RequireAuth>} />
               <Route path="/job-listings" element={<JobListings />} />
-              <Route path="/job-listings/create" element={<JobListingCreate />} />
+              <Route path="/job-listings/create" element={<RequireAuth adminOnly><JobListingCreate /></RequireAuth>} />
               <Route path="/job-listings/:id" element={<JobListingDetail />} />
-              <Route path="/job-listings/:id/edit" element={<JobListingEdit />} />
-              <Route path="/job-listings/:id/delete" element={<JobListingDelete />} />
+              <Route path="/job-listings/:id/edit" element={<RequireAuth adminOnly><JobListingEdit /></RequireAuth>} />
+              <Route path="/job-listings/:id/delete" element={<RequireAuth adminOnly><JobListingDelete /></RequireAuth>} />
               <Route path="/jobs" element={<JobListings />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/users/create" element={<UserCreate />} />
+              <Route path="/users/create" element={<RequireAuth adminOnly><UserCreate /></RequireAuth>} />
               <Route path="/users/:id" element={<UserDetail />} />
-              <Route path="/users/:id/edit" element={<UserEdit />} />
-              <Route path="/users/:id/delete" element={<UserDelete />} />
+              <Route path="/users/:id/edit" element={<RequireAuth adminOnly><UserEdit /></RequireAuth>} />
+              <Route path="/users/:id/delete" element={<RequireAuth adminOnly><UserDelete /></RequireAuth>} />
               <Route path="/tech" element={<Tech />} />
-              <Route path="/tech/create" element={<TechCreate />} />
+              <Route path="/tech/create" element={<RequireAuth adminOnly><TechCreate /></RequireAuth>} />
               <Route path="/techs/:id" element={<TechDetail />} />
-              <Route path="/techs/:id/edit" element={<TechEdit />} />
-              <Route path="/techs/:id/delete" element={<TechDelete />} />
+              <Route path="/techs/:id/edit" element={<RequireAuth adminOnly><TechEdit /></RequireAuth>} />
+              <Route path="/techs/:id/delete" element={<RequireAuth adminOnly><TechDelete /></RequireAuth>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<Home />} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getJobListingDetail, getTechsByListing, getUsersByListing } from '../api.js';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { getJobListingDetail, getTechsByListing, getUsersByListing, createJobApplication, getJobApplicationsByUser } from '../api.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import Pagination from '../components/Pagination.jsx';
 
 export default function JobListingDetail() {
@@ -13,9 +14,13 @@ export default function JobListingDetail() {
   const [techsTotalPages, setTechsTotalPages] = useState(0);
   const [usersPage, setUsersPage] = useState(0);
   const [usersTotalPages, setUsersTotalPages] = useState(0);
+  const [applied, setApplied] = useState(false);
+  const [applying, setApplying] = useState(false);
   const pageSize = 2;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { token, user: currentUser } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     const loadData = async () => {
@@ -32,6 +37,20 @@ export default function JobListingDetail() {
         setUsers(usersData?.content || []);
         setUsersTotalPages(usersData?.page?.totalPages ?? 0);
         setUsersPage(usersData?.page?.number ?? usersPage);
+
+        // Check if current user has applied by fetching applications for the user
+        if (currentUser) {
+          try {
+            const apps = await getJobApplicationsByUser(currentUser.Id);
+            const found = (apps || []).some(a => (a.listing_id == id) || (a.ListingId == id) || (a.listingId == id) || (a.listing_id == Number(id)));
+            setApplied(Boolean(found));
+          } catch (e) {
+            // ignore application check errors
+            setApplied(false);
+          }
+        } else {
+          setApplied(false);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -39,7 +58,7 @@ export default function JobListingDetail() {
       }
     };
     loadData();
-  }, [id, techsPage, usersPage]);
+  }, [id, techsPage, usersPage, currentUser?.Id]);
 
   if (loading) return <div className="page"><p>Loading...</p></div>;
   if (error) return <div className="page"><div className="status status-error">{error}</div></div>;
@@ -54,6 +73,48 @@ export default function JobListingDetail() {
       <div className="detail-header">
         <div className="detail-content">
           <h1>{listing.Name}</h1>
+          <div style={{ marginTop: '0.75rem' }}>
+            {applied ? (
+              <button className="btn btn" disabled>Already applied</button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                onClick={async () => {
+                  if (!token) {
+                    navigate('/login', { state: { from: location } });
+                    return;
+                  }
+                  setApplying(true);
+                  try {
+                    await createJobApplication({ user_id: currentUser.Id, listing_id: Number(id) });
+                    setApplied(true);
+                    try {
+                      const usersData = await getUsersByListing(id, { page: usersPage, size: pageSize });
+                      setUsers(usersData?.content || []);
+                      setUsersTotalPages(usersData?.page?.totalPages ?? 0);
+                      setUsersPage(usersData?.page?.number ?? usersPage);
+                    } catch (e) {
+                      // ignore refresh errors
+                    }
+                    try {
+                      const apps = await getJobApplicationsByUser(currentUser.Id);
+                      const found = (apps || []).some(a => (a.listing_id == id) || (a.ListingId == id) || (a.listingId == id));
+                      setApplied(Boolean(found));
+                    } catch (e) {
+                      // ignore
+                    }
+                  } catch (err) {
+                    setError(err.message);
+                  } finally {
+                    setApplying(false);
+                  }
+                }}
+                disabled={applying}
+              >
+                {applying ? 'Applying…' : 'Apply'}
+              </button>
+            )}
+          </div>
           <div className="detail-meta">
             <div className="detail-meta-item">
               <span className="detail-meta-label">Experience Level</span>

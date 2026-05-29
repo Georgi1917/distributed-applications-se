@@ -130,3 +130,11 @@ export const getJobListingsByUser = (userId, { page = 0, size = 2 } = {}) =>
 export const getJobListingsByTech = (techId, { page = 0, size = 2 } = {}) =>
   fetchJson(`/job_listing/?tech_id=${techId}&page=${page}&size=${size}`);
 
+export const createJobApplication = (data) => sendJson('/job_application/', 'POST', data);
+
+export const getJobApplicationsByListing = (listingId) => fetchJson(`/job_application/by_listing/${listingId}`);
+
+export const getJobApplicationsByUser = (userId) => fetchJson(`/job_application/by_user/${userId}`);
+
+export const deleteJobApplication = (id) => sendJson(`/job_application/delete/${id}`, 'DELETE');
+
