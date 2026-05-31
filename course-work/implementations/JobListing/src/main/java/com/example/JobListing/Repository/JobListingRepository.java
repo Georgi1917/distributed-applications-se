@@ -21,7 +21,7 @@ public interface JobListingRepository extends IBaseRepository<JobListing>
                 OR LOWER(l.experienceLevel) LIKE LOWER(CONCAT("%", :searchBy, "%")))
     """)
     Page<JobListing> findByJobListingTech_Tech_Id(
-            @Param("tech_id") Integer tech_id,
+            @Param("tech_id") long tech_id,
             @Param("searchBy") String searchBy,
             Pageable pageable
     );
@@ -37,7 +37,7 @@ public interface JobListingRepository extends IBaseRepository<JobListing>
                 OR LOWER(l.experienceLevel) LIKE LOWER(CONCAT("%", :searchBy, "%")))
     """)
     Page<JobListing> findByUser_User_Id(
-            @Param("user_id") Integer user_id,
+            @Param("user_id") long user_id,
             @Param("searchBy") String searchBy,
             Pageable pageable
     );
@@ -66,7 +66,7 @@ public interface JobListingRepository extends IBaseRepository<JobListing>
                 OR LOWER(l.experienceLevel) LIKE LOWER(CONCAT("%", :searchBy, "%")))
     """)
     Page<JobListing> findByCompany(
-            @Param("company_id") int company_id,
+            @Param("company_id") long company_id,
             @Param("searchBy") String searchBy,
             Pageable pageable
     );

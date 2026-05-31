@@ -56,7 +56,7 @@ public class UserService extends BaseService<User> implements IUserService
 
     @Async
     public CompletableFuture<Page<UserResponseDTO>> GetUsersByListing
-            (Pageable pageable, int listing_id, @Nullable String searchBy)
+            (Pageable pageable, long listing_id, @Nullable String searchBy)
     {
 
         return CompletableFuture.completedFuture(user_repo.findByListing(pageable, listing_id, searchBy).map(
@@ -70,7 +70,7 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<UserResponseDTO> GetUser(int id)
+    public CompletableFuture<UserResponseDTO> GetUser(long id)
     {
 
         return super.GetItem(id).thenApply(
@@ -132,7 +132,7 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity)
+    public CompletableFuture<UserResponseDTO> UpdateUser(long id, UpdateDTO entity)
     {
 
         if (user_repo.findByUsernameWithoutId(entity.username(), id).isPresent())
@@ -167,7 +167,7 @@ public class UserService extends BaseService<User> implements IUserService
     }
 
     @Async
-    public CompletableFuture<UserResponseDTO> DeleteUser(int id)
+    public CompletableFuture<UserResponseDTO> DeleteUser(long id)
     {
 
         return super.Delete(id).thenApply(

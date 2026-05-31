@@ -19,7 +19,7 @@ export default function Companies() {
   const fetchCompanies = (pageIndex = 0) => {
     setLoading(true);
     setError(null);
-    getCompanies({ page: pageIndex, searchBy, sortBy, asc, size: 8 })
+    getCompanies({ page: pageIndex, searchBy, sortBy, asc, size: 6 })
       .then((data) => {
         setCompanies(data.content || []);
         setTotalPages(data.page?.totalPages ?? 0);

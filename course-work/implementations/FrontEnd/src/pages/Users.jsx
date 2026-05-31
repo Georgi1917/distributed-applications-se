@@ -20,7 +20,7 @@ export default function Users() {
   const fetchUsers = (pageIndex = 0) => {
     setLoading(true);
     setError(null);
-    getUsers({ page: pageIndex, searchBy, sortBy, asc, size: 8 })
+    getUsers({ page: pageIndex, searchBy, sortBy, asc, size: 6 })
       .then((data) => {
         setUsers(data.content || []);
         setTotalPages(data.page?.totalPages ?? 0);

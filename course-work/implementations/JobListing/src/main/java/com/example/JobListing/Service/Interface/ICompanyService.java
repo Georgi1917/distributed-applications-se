@@ -17,12 +17,12 @@ public interface ICompanyService
     CompletableFuture<Page<CompanyResponseDTO>> GetAllCompanies
             (Pageable pageable, @Nullable String searchBy);
     @Async
-    CompletableFuture<CompanyResponseDTO> GetCompany(int id);
+    CompletableFuture<CompanyResponseDTO> GetCompany(long id);
     @Async
     CompletableFuture<CompanyResponseDTO> SaveCompany(CompanyRequestDTO entity);
     @Async
-    CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity);
+    CompletableFuture<CompanyResponseDTO> UpdateCompany(long id, CompanyRequestDTO entity);
     @Async
-    CompletableFuture<CompanyResponseDTO> DeleteCompany(int id);
+    CompletableFuture<CompanyResponseDTO> DeleteCompany(long id);
 
 }

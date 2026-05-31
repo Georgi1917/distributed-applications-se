@@ -15,6 +15,9 @@ public record JobListingUpdateDTO
         @Size(max = 2000)
         String Description,
 
+        @NotNull(message = "Salary cannot be null")
+        Double salary,
+
         @NotNull(message = "Listing experience level cannot be blank")
         JobListingExperienceLevel ExperienceLevel
     )

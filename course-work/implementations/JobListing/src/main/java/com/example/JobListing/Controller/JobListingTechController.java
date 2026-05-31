@@ -25,7 +25,7 @@ public class JobListingTechController
     }
 
     @GetMapping("by_listing/{listing_id}")
-    public List<JobListingTechResponseDTO> GetAllByListing(@PathVariable int listing_id)
+    public List<JobListingTechResponseDTO> GetAllByListing(@PathVariable long listing_id)
     {
 
         return _service.GetAllByListingId(listing_id).join();
@@ -33,7 +33,7 @@ public class JobListingTechController
     }
 
     @GetMapping("by_tech/{tech_id}")
-    public List<JobListingTechResponseDTO> GetAllByTech(@PathVariable int tech_id)
+    public List<JobListingTechResponseDTO> GetAllByTech(@PathVariable long tech_id)
     {
 
         return _service.GetAllByTechId(tech_id).join();
@@ -50,7 +50,7 @@ public class JobListingTechController
     }
 
     @DeleteMapping("/delete/{id}")
-    public void DeleteJobListingTech(@PathVariable int id)
+    public void DeleteJobListingTech(@PathVariable long id)
     {
 
         _service.DeleteListingTech(id);

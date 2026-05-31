@@ -32,7 +32,7 @@ public class TechController
     @GetMapping("/")
     public Page<TechResponseDTO> GetAll(
             @RequestParam(required = false) String searchBy,
-            @RequestParam(required = false) Integer listing_id,
+            @RequestParam(required = false) Long listing_id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -55,7 +55,7 @@ public class TechController
     }
 
     @GetMapping("/{id}")
-    public TechResponseDTO GetTech(@PathVariable int id)
+    public TechResponseDTO GetTech(@PathVariable long id)
     {
 
         return _service.GetTech(id).join();
@@ -72,7 +72,7 @@ public class TechController
 
     @PutMapping("/update/{id}")
     public TechResponseDTO UpdateTech
-            (@PathVariable int id, @Valid @RequestBody TechRequestDto entity)
+            (@PathVariable long id, @Valid @RequestBody TechRequestDto entity)
     {
 
         return _service.UpdateTech(id, entity).join();
@@ -80,7 +80,7 @@ public class TechController
     }
 
     @DeleteMapping("/delete/{id}")
-    public void DeleteTech(@PathVariable int id)
+    public void DeleteTech(@PathVariable long id)
     {
 
         _service.Delete(id);

@@ -7,9 +7,9 @@ import lombok.Builder;
 public record JobListingTechRequestDTO
     (
         @NotNull(message = "Listing Id cannot be null")
-        int listing_id,
+        long listing_id,
         @NotNull(message = "Tech Id cannot be null")
-        int tech_id,
+        long tech_id,
         @NotNull(message = "Is Required field cannot be null")
         boolean IsRequired
     )

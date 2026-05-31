@@ -21,7 +21,7 @@ public class Company extends BaseEntity
 
     @Column(nullable = false, unique = true)
     private String companyName;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String description;
     private Integer employeeCount;
     @Enumerated(EnumType.STRING)

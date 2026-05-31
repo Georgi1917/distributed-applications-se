@@ -20,7 +20,7 @@ export default function Tech() {
   const fetchTechs = (pageIndex = 0) => {
     setLoading(true);
     setError(null);
-    getTechs({ page: pageIndex, searchBy, sortBy, asc, size: 8 })
+    getTechs({ page: pageIndex, searchBy, sortBy, asc, size: 6 })
       .then((data) => {
         setTechs(data.content || []);
         setTotalPages(data.page?.totalPages ?? 0);

@@ -37,7 +37,7 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     }
 
     @Async
-    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListingId(int listing_id)
+    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListingId(long listing_id)
     {
 
         return super.GetAll().thenApply(
@@ -58,7 +58,7 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     }
 
     @Async
-    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTechId(int tech_id)
+    public CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTechId(long tech_id)
     {
 
         return super.GetAll().thenApply(
@@ -105,7 +105,7 @@ public class JobListingTechService extends BaseService<JobListingTech> implement
     }
 
     @Async
-    public void DeleteListingTech(int id)
+    public void DeleteListingTech(long id)
     {
 
         super.Delete(id);

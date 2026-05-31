@@ -18,16 +18,16 @@ public interface IUserService
     CompletableFuture<Page<UserResponseDTO>> GetAllUsers(Pageable pageable, @Nullable String searchBy);
     @Async
     CompletableFuture<Page<UserResponseDTO>> GetUsersByListing
-            (Pageable pageable, int listing_id, @Nullable String searchBy);
+            (Pageable pageable, long listing_id, @Nullable String searchBy);
     @Async
-    CompletableFuture<UserResponseDTO> GetUser(int id);
+    CompletableFuture<UserResponseDTO> GetUser(long id);
     @Async
     CompletableFuture<UserResponseDTO> GetUserByUsername(String username);
     @Async
     CompletableFuture<UserResponseDTO> SaveUser(UserCreationDTO entity);
     @Async
-    CompletableFuture<UserResponseDTO> UpdateUser(int id, UpdateDTO entity);
+    CompletableFuture<UserResponseDTO> UpdateUser(long id, UpdateDTO entity);
     @Async
-    CompletableFuture<UserResponseDTO> DeleteUser(int id);
+    CompletableFuture<UserResponseDTO> DeleteUser(long id);
 
 }

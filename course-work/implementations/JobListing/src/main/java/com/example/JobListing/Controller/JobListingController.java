@@ -31,9 +31,9 @@ public class JobListingController
 
     @GetMapping("/")
     public Page<JobListingResponseDTO> GetAllListings(
-            @RequestParam(required = false) Integer tech_id,
-            @RequestParam(required = false) Integer user_id,
-            @RequestParam(required = false) Integer company_id,
+            @RequestParam(required = false) Long tech_id,
+            @RequestParam(required = false) Long user_id,
+            @RequestParam(required = false) Long company_id,
             @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -67,7 +67,7 @@ public class JobListingController
     }
 
     @GetMapping("/{id}")
-    public JobListingResponseDTO GetListing(@PathVariable int id)
+    public JobListingResponseDTO GetListing(@PathVariable long id)
     {
 
         return _service.GetListing(id).join();
@@ -84,7 +84,7 @@ public class JobListingController
 
     @PutMapping("/update/{id}")
     public JobListingResponseDTO UpdateListing
-            (@PathVariable int id, @Valid @RequestBody JobListingUpdateDTO entity)
+            (@PathVariable long id, @Valid @RequestBody JobListingUpdateDTO entity)
     {
 
         return _service.UpdateListing(id, entity).join();
@@ -92,7 +92,7 @@ public class JobListingController
     }
 
     @DeleteMapping("/delete/{id}")
-    public JobListingResponseDTO DeleteListing(@PathVariable int id)
+    public JobListingResponseDTO DeleteListing(@PathVariable long id)
     {
 
         return _service.DeleteListing(id).join();

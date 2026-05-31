@@ -19,14 +19,14 @@ public interface ITechService
 
     @Async
     CompletableFuture<Page<TechResponseDTO>> GetTechsByListing
-            (Pageable pageable, @Nullable String searchBy, int listing_id);
+            (Pageable pageable, @Nullable String searchBy, long listing_id);
 
     @Async
-    CompletableFuture<TechResponseDTO> GetTech(int id);
+    CompletableFuture<TechResponseDTO> GetTech(long id);
     @Async
     CompletableFuture<TechResponseDTO> SaveTech(TechRequestDto entity);
     @Async
-    CompletableFuture<TechResponseDTO> UpdateTech(int id, TechRequestDto entity);
+    CompletableFuture<TechResponseDTO> UpdateTech(long id, TechRequestDto entity);
 
 
 

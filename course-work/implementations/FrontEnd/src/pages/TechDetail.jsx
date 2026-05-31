@@ -10,7 +10,7 @@ export default function TechDetail() {
   const [jobListings, setJobListings] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 2;
+  const pageSize = 6;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

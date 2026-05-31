@@ -6,10 +6,11 @@ import lombok.Builder;
 @Builder
 public record JobListingResponseDTO
     (
-        Integer Id,
+        Long Id,
         String Name,
         String Description,
+        Double salary,
         JobListingExperienceLevel ExperienceLevel,
-        Integer company_id
+        Long company_id
     )
 { }

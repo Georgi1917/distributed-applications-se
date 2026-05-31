@@ -28,7 +28,7 @@ public interface CompanyRepository extends IBaseRepository<Company>
         FROM Company c
         WHERE c.Id != :id AND c.companyName = :companyName 
     """)
-    Optional<Company> findByNameWithoutId(String companyName, int id);
+    Optional<Company> findByNameWithoutId(String companyName, long id);
 
     Optional<Company> findBycompanyName(String companyName);
 

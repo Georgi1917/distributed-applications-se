@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getJobListings } from '../api.js';
+import { getJobListings, getCompanies } from '../api.js';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import SearchSortBar from '../components/SearchSortBar.jsx';
@@ -19,7 +19,7 @@ export default function JobListings() {
   const fetchJobListings = (pageIndex = 0) => {
     setLoading(true);
     setError(null);
-    getJobListings({ page: pageIndex, searchBy, sortBy, asc, size: 8 })
+    getJobListings({ page: pageIndex, searchBy, sortBy, asc, size: 6 })
       .then((data) => {
         setJobs(data.content || []);
         setTotalPages(data.page?.totalPages ?? 0);
@@ -29,9 +29,23 @@ export default function JobListings() {
       .finally(() => setLoading(false));
   };
 
+  const fetchCompanies = async () => {
+    try {
+      const data = await getCompanies({ page: 0, size: 1000 });
+      const map = {};
+      (data.content || []).forEach(c => { map[c.Id] = c.CompanyName; });
+      setCompaniesMap(map);
+    } catch (e) {
+      // ignore
+    }
+  };
+
   useEffect(() => {
     fetchJobListings();
+    fetchCompanies();
   }, []);
+
+  const [companiesMap, setCompaniesMap] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,7 +91,8 @@ export default function JobListings() {
                   <th>ID</th>
                   <th>Name</th>
                   <th>Experience</th>
-                  <th>Company ID</th>
+                  <th>Salary</th>
+                  <th>Company</th>
                   {isAdmin && <th>Actions</th>}
                 </tr>
               </thead>
@@ -87,7 +102,8 @@ export default function JobListings() {
                     <td>{job.Id}</td>
                     <td>{job.Name}</td>
                     <td>{job.ExperienceLevel}</td>
-                    <td>{job.company_id}</td>
+                    <td>{job.salary != null ? job.salary : 'N/A'}</td>
+                    <td>{companiesMap[job.company_id] || job.company_id}</td>
                     {isAdmin && (
                       <td style={{ display: 'flex', gap: '0.5rem' }}>
                         <Link to={`/job-listings/${job.Id}/edit`} className="btn btn-small" onClick={(e) => e.stopPropagation()} style={{ background: '#3b82f6', color: 'white' }}>Edit</Link>

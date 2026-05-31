@@ -17,7 +17,7 @@ export default function JobListingEdit() {
       try {
         setLoading(true);
         const data = await getJobListingDetail(id);
-        setForm({ Name: data.Name || '', Description: data.Description || '', ExperienceLevel: data.ExperienceLevel || experienceLevels[0], company_id: data.company_id ?? '' });
+        setForm({ Name: data.Name || '', Description: data.Description || '', Salary: data.salary?.toString() || '', ExperienceLevel: data.ExperienceLevel || experienceLevels[0], company_id: data.company_id ?? '' });
         const comps = await getCompanies({ page: 0, size: 100 });
         setCompanies(comps?.content || []);
       } catch (err) {
@@ -38,7 +38,7 @@ export default function JobListingEdit() {
     e.preventDefault();
     try {
       setError(null);
-      const payload = { Name: form.Name, Description: form.Description, ExperienceLevel: form.ExperienceLevel };
+      const payload = { Name: form.Name, Description: form.Description, salary: Number(form.Salary), ExperienceLevel: form.ExperienceLevel };
       await updateJobListing(id, payload);
       navigate(`/job-listings/${id}`);
     } catch (err) {
@@ -61,6 +61,10 @@ export default function JobListingEdit() {
         <div className="form-group">
           <label htmlFor="Description">Description</label>
           <textarea id="Description" name="Description" value={form.Description} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="Salary">Salary</label>
+          <input id="Salary" name="Salary" type="number" min="0" step="0.01" value={form.Salary} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="ExperienceLevel">Experience</label>

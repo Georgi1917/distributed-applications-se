@@ -44,7 +44,7 @@ public class TechService extends BaseService<Tech> implements ITechService
 
     @Async
     public CompletableFuture<Page<TechResponseDTO>> GetTechsByListing
-            (Pageable pageable, @Nullable String searchBy, int listing_id)
+            (Pageable pageable, @Nullable String searchBy, long listing_id)
     {
 
         return CompletableFuture.completedFuture(_repository.findByListing(pageable, searchBy, listing_id).map(
@@ -57,7 +57,7 @@ public class TechService extends BaseService<Tech> implements ITechService
     }
 
     @Async
-    public CompletableFuture<TechResponseDTO> GetTech(int id)
+    public CompletableFuture<TechResponseDTO> GetTech(long id)
     {
 
         return super.GetItem(id).thenApply(
@@ -92,7 +92,7 @@ public class TechService extends BaseService<Tech> implements ITechService
     }
 
     @Async
-    public CompletableFuture<TechResponseDTO> UpdateTech(int id, TechRequestDto entity)
+    public CompletableFuture<TechResponseDTO> UpdateTech(long id, TechRequestDto entity)
     {
 
         if (_repository.findByNameWithoutId(id, entity.name()).isPresent())

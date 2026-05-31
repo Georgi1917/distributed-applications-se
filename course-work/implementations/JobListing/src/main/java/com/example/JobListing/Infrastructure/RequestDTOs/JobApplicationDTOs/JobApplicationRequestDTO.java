@@ -8,9 +8,9 @@ public record JobApplicationRequestDTO
     (
 
         @NotNull(message = "User Id cannot be null")
-        Integer user_id,
+        Long user_id,
         @NotNull(message = "Listing Id cannot be null")
-        Integer listing_id
+        Long listing_id
 
     )
 { }

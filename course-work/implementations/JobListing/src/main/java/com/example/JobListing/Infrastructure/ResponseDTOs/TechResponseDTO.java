@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 public record TechResponseDTO
         (
-                int id,
+                Long id,
                 String name,
                 TechCategory techCategory
         )

@@ -48,7 +48,7 @@ public class CompanyController
     }
 
     @GetMapping("/{id}")
-    public CompanyResponseDTO GetCompany(@PathVariable int id)
+    public CompanyResponseDTO GetCompany(@PathVariable long id)
     {
 
         return _service.GetCompany(id).join();
@@ -65,7 +65,7 @@ public class CompanyController
 
     @PutMapping("/update/{id}")
     public CompanyResponseDTO UpdateCompany
-                (@PathVariable int id, @Valid @RequestBody CompanyRequestDTO entity)
+                (@PathVariable long id, @Valid @RequestBody CompanyRequestDTO entity)
     {
 
         return _service.UpdateCompany(id, entity).join();
@@ -73,7 +73,7 @@ public class CompanyController
     }
 
     @DeleteMapping("/delete/{id}")
-    public CompanyResponseDTO DeleteCompany(@PathVariable int id)
+    public CompanyResponseDTO DeleteCompany(@PathVariable long id)
     {
 
         return _service.DeleteCompany(id).join();

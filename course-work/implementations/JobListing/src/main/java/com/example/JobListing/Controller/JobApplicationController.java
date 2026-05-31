@@ -34,7 +34,7 @@ public class JobApplicationController
     }
 
     @GetMapping("by_user/{user_id}")
-    public List<JobApplicationResponseDTO> GetApplicationsByUser(@PathVariable int user_id)
+    public List<JobApplicationResponseDTO> GetApplicationsByUser(@PathVariable long user_id)
     {
 
         return _service.GetApplicationsByUser(user_id).join();
@@ -42,7 +42,7 @@ public class JobApplicationController
     }
 
     @GetMapping("by_listing/{listing_id}")
-    public List<JobApplicationResponseDTO> GetApplicationsByListing(@PathVariable int listing_id)
+    public List<JobApplicationResponseDTO> GetApplicationsByListing(@PathVariable long listing_id)
     {
 
         return _service.GetApplicationsByListing(listing_id).join();
@@ -50,7 +50,7 @@ public class JobApplicationController
     }
 
     @GetMapping("{id}")
-    public JobApplicationResponseDTO GetApplication(@PathVariable int id)
+    public JobApplicationResponseDTO GetApplication(@PathVariable long id)
     {
 
         return _service.GetApplication(id).join();
@@ -78,7 +78,7 @@ public class JobApplicationController
     }
 
     @DeleteMapping("/delete/{id}")
-    public JobApplicationResponseDTO DeleteApplication(@PathVariable int id)
+    public JobApplicationResponseDTO DeleteApplication(@PathVariable long id)
     {
 
         return _service.DeleteApplication(id).join();

@@ -6,7 +6,7 @@ const experienceLevels = ['JUNIOR', 'MID', 'SENIOR'];
 
 export default function JobListingCreate() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ Name: '', Description: '', ExperienceLevel: experienceLevels[0], company_id: '' });
+  const [form, setForm] = useState({ Name: '', Description: '', Salary: '', ExperienceLevel: experienceLevels[0], company_id: '' });
   const [companies, setCompanies] = useState([]);
   const [error, setError] = useState(null);
 
@@ -33,6 +33,7 @@ export default function JobListingCreate() {
       const payload = {
         Name: form.Name,
         Description: form.Description,
+        salary: Number(form.Salary),
         ExperienceLevel: form.ExperienceLevel,
         company_id: Number(form.company_id)
       };
@@ -55,6 +56,10 @@ export default function JobListingCreate() {
         <div className="form-group">
           <label htmlFor="Description">Description</label>
           <textarea id="Description" name="Description" value={form.Description} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="Salary">Salary</label>
+          <input id="Salary" name="Salary" type="number" min="0" step="0.01" value={form.Salary} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label htmlFor="ExperienceLevel">Experience</label>

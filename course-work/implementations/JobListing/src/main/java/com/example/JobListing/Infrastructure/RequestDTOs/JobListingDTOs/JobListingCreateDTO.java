@@ -17,10 +17,13 @@ public record JobListingCreateDTO
         @Size(max = 2000)
         String Description,
 
+        @NotNull(message = "Salary cannot be null")
+        Double salary,
+
         @NotNull(message = "Listing experience level cannot be blank")
         JobListingExperienceLevel ExperienceLevel,
 
         @NotNull(message = "Company Id cannot be null")
-        Integer company_id
+        Long company_id
     )
 { }

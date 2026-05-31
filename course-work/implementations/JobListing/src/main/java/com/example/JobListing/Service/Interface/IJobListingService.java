@@ -22,20 +22,20 @@ public interface IJobListingService
             (Pageable pageable, @Nullable String searchBy);
     @Async
     CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech
-            (Pageable pageable, int tech_id, @Nullable String searchBy);
+            (Pageable pageable, long tech_id, @Nullable String searchBy);
     @Async
     CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser
-            (Pageable pageable, int user_id, @Nullable String searchBy);
+            (Pageable pageable, long user_id, @Nullable String searchBy);
     @Async
     CompletableFuture<Page<JobListingResponseDTO>> GetListingsByCompany
-            (Pageable pageable, int company_id, @Nullable String searchBy);
+            (Pageable pageable, long company_id, @Nullable String searchBy);
     @Async
-    CompletableFuture<JobListingResponseDTO> GetListing(int id);
+    CompletableFuture<JobListingResponseDTO> GetListing(long id);
     @Async
     CompletableFuture<JobListingResponseDTO> SaveListing(JobListingCreateDTO entity);
     @Async
-    CompletableFuture<JobListingResponseDTO> UpdateListing(int id, JobListingUpdateDTO entity);
+    CompletableFuture<JobListingResponseDTO> UpdateListing(long id, JobListingUpdateDTO entity);
     @Async
-    CompletableFuture<JobListingResponseDTO> DeleteListing(int id);
+    CompletableFuture<JobListingResponseDTO> DeleteListing(long id);
 
 }

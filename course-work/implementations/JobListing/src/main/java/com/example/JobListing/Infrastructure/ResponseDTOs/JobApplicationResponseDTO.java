@@ -5,8 +5,8 @@ import lombok.Builder;
 @Builder
 public record JobApplicationResponseDTO
     (
-        Integer Id,
-        Integer user_id,
-        Integer listing_id
+        Long Id,
+        Long user_id,
+        Long listing_id
     )
 { }

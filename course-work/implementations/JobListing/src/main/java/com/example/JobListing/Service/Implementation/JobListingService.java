@@ -47,6 +47,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                                         .Id(item.getId())
                                         .Name(item.getName())
                                         .Description(item.getDescription())
+                                        .salary(item.getSalary())
                                         .ExperienceLevel(item.getExperienceLevel())
                                         .company_id(item.getCompany().getId()).build())
                 );
@@ -55,7 +56,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
     @Async
     public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByTech
-            (Pageable pageable, int tech_id, @Nullable String searchBy)
+            (Pageable pageable, long tech_id, @Nullable String searchBy)
     {
 
         return CompletableFuture.completedFuture(listing_repository
@@ -64,6 +65,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .Id(item.getId())
                         .Name(item.getName())
                         .Description(item.getDescription())
+                        .salary(item.getSalary())
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build()
         ));
@@ -72,7 +74,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
     @Async
     public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByUser
-            (Pageable pageable, int user_id, @Nullable String searchBy)
+            (Pageable pageable, long user_id, @Nullable String searchBy)
     {
 
         return CompletableFuture.completedFuture(listing_repository
@@ -81,6 +83,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .Id(item.getId())
                         .Name(item.getName())
                         .Description(item.getDescription())
+                        .salary(item.getSalary())
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build()
         ));
@@ -89,7 +92,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
     @Async
     public CompletableFuture<Page<JobListingResponseDTO>> GetListingsByCompany
-            (Pageable pageable, int company_id, @Nullable String searchBy)
+            (Pageable pageable, long company_id, @Nullable String searchBy)
     {
 
         return CompletableFuture.completedFuture(listing_repository.
@@ -98,6 +101,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                                 .Id(item.getId())
                                 .Name(item.getName())
                                 .Description(item.getDescription())
+                                .salary(item.getSalary())
                                 .ExperienceLevel(item.getExperienceLevel())
                                 .company_id(item.getCompany().getId()).build()
                 ));
@@ -105,7 +109,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
     }
 
     @Async
-    public CompletableFuture<JobListingResponseDTO> GetListing(int id)
+    public CompletableFuture<JobListingResponseDTO> GetListing(long id)
     {
 
         return super.GetItem(id).thenApply(
@@ -113,6 +117,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .Id(item.getId())
                         .Name(item.getName())
                         .Description(item.getDescription())
+                        .salary(item.getSalary())
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build());
 
@@ -128,6 +133,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
         JobListing item = JobListing.builder()
                                     .name(entity.Name())
                                     .description(entity.Description())
+                                    .salary(entity.salary())
                                     .experienceLevel(entity.ExperienceLevel())
                                     .company(company).build();
 
@@ -137,6 +143,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                             .Id(item.getId())
                             .Name(item.getName())
                             .Description(item.getDescription())
+                            .salary(item.getSalary())
                             .ExperienceLevel(item.getExperienceLevel())
                             .company_id(item.getCompany().getId()).build());
 
@@ -144,7 +151,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
 
     @Async
     public CompletableFuture<JobListingResponseDTO> UpdateListing
-            (@PathVariable int id, @RequestBody JobListingUpdateDTO entity)
+            (@PathVariable long id, @RequestBody JobListingUpdateDTO entity)
     {
 
         return super.GetItem(id).thenApply(
@@ -164,13 +171,14 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .Id(item.getId())
                         .Name(item.getName())
                         .Description(item.getDescription())
+                        .salary(item.getSalary())
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build());
 
     }
 
     @Async
-    public CompletableFuture<JobListingResponseDTO> DeleteListing(@PathVariable int id)
+    public CompletableFuture<JobListingResponseDTO> DeleteListing(@PathVariable long id)
     {
 
         return super.Delete(id).thenApply(
@@ -178,6 +186,7 @@ public class JobListingService extends BaseService<JobListing> implements IJobLi
                         .Id(item.getId())
                         .Name(item.getName())
                         .Description(item.getDescription())
+                        .salary(item.getSalary())
                         .ExperienceLevel(item.getExperienceLevel())
                         .company_id(item.getCompany().getId()).build()
         );

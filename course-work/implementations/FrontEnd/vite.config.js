@@ -41,6 +41,11 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
         headers: { origin: 'http://localhost:8080' }
+      },
+      '/job_listing_tech/': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        headers: { origin: 'http://localhost:8080' }
       }
     }
   }

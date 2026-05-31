@@ -50,7 +50,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     }
 
     @Async
-    public CompletableFuture<CompanyResponseDTO> GetCompany(int id)
+    public CompletableFuture<CompanyResponseDTO> GetCompany(long id)
     {
 
         return super.GetItem(id).thenApply(
@@ -97,7 +97,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     }
 
     @Async
-    public CompletableFuture<CompanyResponseDTO> UpdateCompany(int id, CompanyRequestDTO entity)
+    public CompletableFuture<CompanyResponseDTO> UpdateCompany(long id, CompanyRequestDTO entity)
     {
 
         if (_repository.findByNameWithoutId(entity.CompanyName(), id).isPresent())
@@ -133,7 +133,7 @@ public class CompanyService extends BaseService<Company> implements ICompanyServ
     }
 
     @Async
-    public CompletableFuture<CompanyResponseDTO> DeleteCompany(int id)
+    public CompletableFuture<CompanyResponseDTO> DeleteCompany(long id)
     {
 
         return super.Delete(id).thenApply(

@@ -11,14 +11,14 @@ public interface IJobApplicationService
 {
 
     @Async
-    CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(int user_id);
+    CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(long user_id);
     @Async
-    CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(int listing_id);
+    CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(long listing_id);
     @Async
-    CompletableFuture<JobApplicationResponseDTO> GetApplication(int id);
+    CompletableFuture<JobApplicationResponseDTO> GetApplication(long id);
     @Async
     CompletableFuture<JobApplicationResponseDTO> SaveApplication(JobApplicationRequestDTO entity);
     @Async
-    CompletableFuture<JobApplicationResponseDTO> DeleteApplication(int id);
+    CompletableFuture<JobApplicationResponseDTO> DeleteApplication(long id);
 
 }

@@ -11,12 +11,12 @@ public interface IJobListingTech
 {
 
     @Async
-    CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListingId(int listing_id);
+    CompletableFuture<List<JobListingTechResponseDTO>> GetAllByListingId(long listing_id);
     @Async
-    CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTechId(int tech_id);
+    CompletableFuture<List<JobListingTechResponseDTO>> GetAllByTechId(long tech_id);
     @Async
     CompletableFuture<JobListingTechResponseDTO> SaveListingTech(JobListingTechRequestDTO entity);
     @Async
-    void DeleteListingTech(int id);
+    void DeleteListingTech(long id);
 
 }

@@ -132,7 +132,7 @@ public class SecurityConfig
                             .requestMatchers(HttpMethod.POST, "/job_application/**").hasAnyRole("USER", "ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/job_application/**").hasRole("ADMIN")
 
-                            .requestMatchers(HttpMethod.GET, "/job_listing_tech/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/job_listing_tech/**").permitAll()
                             .requestMatchers(HttpMethod.POST, "/job_listing_tech/**").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/job_listing_tech/**").hasRole("ADMIN")
 

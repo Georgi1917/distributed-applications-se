@@ -25,7 +25,7 @@ public interface UserRepository extends IBaseRepository<User>
                 OR LOWER(u.role) LIKE LOWER(CONCAT("%", :searchBy, "%")))
     """)
     Page<User> findByListing
-            (Pageable pageable, @Param("listing_id") int listing_id, @Param("searchBy") @Nullable String searchBy);
+            (Pageable pageable, @Param("listing_id") long listing_id, @Param("searchBy") @Nullable String searchBy);
 
     @Query("""
         SELECT DISTINCT u
@@ -42,12 +42,12 @@ public interface UserRepository extends IBaseRepository<User>
         FROM User u
         WHERE u.Id != :id AND u.username = :username
     """)
-    Optional<User> findByUsernameWithoutId(String username, int id);
+    Optional<User> findByUsernameWithoutId(String username, long id);
 
     @Query("""
         SELECT DISTINCT u
         FROM User u
         WHERE u.Id != :id AND u.email = :email
     """)
-    Optional<User> findByEmailWithoutId(String email, int id);
+    Optional<User> findByEmailWithoutId(String email, long id);
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Builder
 public record UserResponseDTO
     (
-            Integer Id,
+            Long Id,
             String Email,
             String Username,
             UserRole Role

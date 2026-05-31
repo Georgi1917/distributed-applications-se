@@ -41,7 +41,7 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     }
 
     @Async
-    public CompletableFuture<T> GetItem(Integer id)
+    public CompletableFuture<T> GetItem(long id)
     {
 
         T item = _repository.findById(id).orElseThrow(
@@ -63,7 +63,7 @@ public abstract class BaseService<T extends BaseEntity> implements IService<T>
     }
 
     @Async
-    public CompletableFuture<T> Delete(int id)
+    public CompletableFuture<T> Delete(long id)
     {
 
         T to_delete = _repository.findById(id).orElseThrow(

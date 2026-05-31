@@ -35,7 +35,7 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     }
 
     @Async
-    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(int user_id)
+    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByUser(long user_id)
     {
 
         return super.GetAll().thenApply(
@@ -52,7 +52,7 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     }
 
     @Async
-    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(int listing_id)
+    public CompletableFuture<List<JobApplicationResponseDTO>> GetApplicationsByListing(long listing_id)
     {
 
         return super.GetAll().thenApply(
@@ -69,7 +69,7 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     }
 
     @Async
-    public CompletableFuture<JobApplicationResponseDTO> GetApplication(int id)
+    public CompletableFuture<JobApplicationResponseDTO> GetApplication(long id)
     {
 
         return super.GetItem(id).thenApply(
@@ -106,7 +106,7 @@ public class JobApplicationService extends BaseService<JobApplication> implement
     }
 
     @Async
-    public CompletableFuture<JobApplicationResponseDTO> DeleteApplication(int id)
+    public CompletableFuture<JobApplicationResponseDTO> DeleteApplication(long id)
     {
 
         return super.Delete(id).thenApply(

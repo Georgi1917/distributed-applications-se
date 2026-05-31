@@ -33,7 +33,7 @@ public interface TechRepository extends IBaseRepository<Tech>
     """)
     Page<Tech> findByListing
             (Pageable pageable, @Param("searchBy") @Nullable String searchBy,
-             @Param("listing_id") int listing_id);
+             @Param("listing_id") long listing_id);
 
     Optional<Tech> findByName(String name);
 
@@ -42,5 +42,5 @@ public interface TechRepository extends IBaseRepository<Tech>
         FROM Tech t
         WHERE t.Id != :id AND t.name = :name  
     """)
-    Optional<Tech> findByNameWithoutId(int id, String name);
+    Optional<Tech> findByNameWithoutId(long id, String name);
 }

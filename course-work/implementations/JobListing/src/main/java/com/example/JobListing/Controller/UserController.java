@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/")
     public Page<UserResponseDTO> GetAllUsers(
-            @RequestParam(required = false) Integer listing_id,
+            @RequestParam(required = false) Long listing_id,
             @RequestParam(required = false) String searchBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO GetUser(@PathVariable int id)
+    public UserResponseDTO GetUser(@PathVariable long id)
     {
 
         return _service.GetUser(id).join();
@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public UserResponseDTO UpdateUser(@PathVariable int id, @Valid @RequestBody UpdateDTO entity)
+    public UserResponseDTO UpdateUser(@PathVariable long id, @Valid @RequestBody UpdateDTO entity)
     {
 
         return _service.UpdateUser(id, entity).join();
@@ -80,7 +80,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public UserResponseDTO DeleteUser(@PathVariable int id)
+    public UserResponseDTO DeleteUser(@PathVariable long id)
     {
 
         return _service.DeleteUser(id).join();

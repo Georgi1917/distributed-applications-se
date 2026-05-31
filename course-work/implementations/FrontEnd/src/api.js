@@ -28,7 +28,7 @@ const fetchJson = async (path, options = {}) => {
   return parseJson(response);
 };
 
-const buildQuery = ({ path, searchBy = '', sortBy = 'id', asc = true, size = 8, page = 0 }) => {
+const buildQuery = ({ path, searchBy = '', sortBy = 'id', asc = true, size = 6, page = 0 }) => {
   const params = new URLSearchParams();
   params.set('page', String(page));
   params.set('size', String(size));
@@ -115,19 +115,19 @@ export const createUser = (data) => sendJson('/user/', 'POST', data);
 export const updateUser = (id, data) => sendJson(`/user/update/${id}`, 'PUT', data);
 export const deleteUser = (id) => sendJson(`/user/delete/${id}`, 'DELETE');
 
-export const getJobListingsByCompany = (companyId, { page = 0, size = 2 } = {}) =>
+export const getJobListingsByCompany = (companyId, { page = 0, size = 6 } = {}) =>
   fetchJson(`/job_listing/?company_id=${companyId}&page=${page}&size=${size}`);
 
-export const getTechsByListing = (listingId, { page = 0, size = 2 } = {}) =>
+export const getTechsByListing = (listingId, { page = 0, size = 6 } = {}) =>
   fetchJson(`/tech/?listing_id=${listingId}&page=${page}&size=${size}`);
 
-export const getUsersByListing = (listingId, { page = 0, size = 2 } = {}) =>
+export const getUsersByListing = (listingId, { page = 0, size = 6 } = {}) =>
   fetchJson(`/user/?listing_id=${listingId}&page=${page}&size=${size}`);
 
-export const getJobListingsByUser = (userId, { page = 0, size = 2 } = {}) =>
+export const getJobListingsByUser = (userId, { page = 0, size = 6 } = {}) =>
   fetchJson(`/job_listing/?user_id=${userId}&page=${page}&size=${size}`);
 
-export const getJobListingsByTech = (techId, { page = 0, size = 2 } = {}) =>
+export const getJobListingsByTech = (techId, { page = 0, size = 6 } = {}) =>
   fetchJson(`/job_listing/?tech_id=${techId}&page=${page}&size=${size}`);
 
 export const createJobApplication = (data) => sendJson('/job_application/', 'POST', data);
@@ -137,4 +137,11 @@ export const getJobApplicationsByListing = (listingId) => fetchJson(`/job_applic
 export const getJobApplicationsByUser = (userId) => fetchJson(`/job_application/by_user/${userId}`);
 
 export const deleteJobApplication = (id) => sendJson(`/job_application/delete/${id}`, 'DELETE');
+
+export const getJobListingTechsByListing = (listingId) => fetchJson(`/job_listing_tech/by_listing/${listingId}`);
+
+
+export const deleteJobListingTech = (id) => sendJson(`/job_listing_tech/delete/${id}`, 'DELETE');
+
+export const createJobListingTech = (data) => sendJson('/job_listing_tech/', 'POST', data);
 

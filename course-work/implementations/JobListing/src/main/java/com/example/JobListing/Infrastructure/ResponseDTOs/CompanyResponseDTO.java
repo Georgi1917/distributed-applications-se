@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record CompanyResponseDTO
         (
-            Integer Id,
+            Long Id,
             String CompanyName,
             String Description,
             Integer EmployeeCount,

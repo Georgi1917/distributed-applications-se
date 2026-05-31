@@ -19,7 +19,7 @@ public class BaseEntity
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Long Id;
 
     @CreatedDate
     @Column(name="added_on", nullable = false, updatable = false)

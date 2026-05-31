@@ -14,12 +14,12 @@ public interface IService<T extends BaseEntity>
     @Async
     CompletableFuture<List<T>> GetAll();
     @Async
-    public CompletableFuture<Page<T>> GetAllPageable(Pageable pageable);
+    CompletableFuture<Page<T>> GetAllPageable(Pageable pageable);
     @Async
-    CompletableFuture<T> GetItem(Integer id);
+    CompletableFuture<T> GetItem(long id);
     @Async
     CompletableFuture<T> Save(T entity);
     @Async
-    CompletableFuture<T> Delete(int id);
+    CompletableFuture<T> Delete(long id);
 
 }
