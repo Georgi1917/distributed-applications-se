@@ -61,7 +61,7 @@ export default function Companies() {
         onAscChange={setAsc}
         onSubmit={handleSubmit}
         sortOptions={[
-          { value: 'id', label: 'ID' },
+          { value: 'id', label: 'Default' },
           { value: 'companyName', label: 'Name' },
           { value: 'employeeCount', label: 'Employees' },
           { value: 'type', label: 'Type' },
@@ -77,7 +77,6 @@ export default function Companies() {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Name</th>
                   <th>Employees</th>
                   <th>Type</th>
@@ -89,7 +88,6 @@ export default function Companies() {
               <tbody>
                 {companies.map((company) => (
                   <tr key={company.Id} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/companies/${company.Id}`}>
-                    <td>{company.Id}</td>
                     <td>{company.CompanyName}</td>
                     <td>{company.EmployeeCount}</td>
                     <td>{company.Type}</td>

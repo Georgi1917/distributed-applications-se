@@ -75,7 +75,7 @@ export default function JobListings() {
         onAscChange={setAsc}
         onSubmit={handleSubmit}
         sortOptions={[
-          { value: 'id', label: 'ID' },
+          { value: 'id', label: 'Default' },
           { value: 'name', label: 'Name' },
           { value: 'experienceLevel', label: 'Experience' }
         ]}
@@ -88,7 +88,6 @@ export default function JobListings() {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Name</th>
                   <th>Experience</th>
                   <th>Salary</th>
@@ -99,7 +98,6 @@ export default function JobListings() {
               <tbody>
                 {jobs.map((job) => (
                   <tr key={job.Id} style={{ cursor: 'pointer' }} onClick={() => window.location.href = `/job-listings/${job.Id}`}>
-                    <td>{job.Id}</td>
                     <td>{job.Name}</td>
                     <td>{job.ExperienceLevel}</td>
                     <td>{job.salary != null ? job.salary : 'N/A'}</td>

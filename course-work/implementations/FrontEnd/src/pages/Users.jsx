@@ -62,7 +62,7 @@ export default function Users() {
         onAscChange={setAsc}
         onSubmit={handleSubmit}
         sortOptions={[
-          { value: 'id', label: 'ID' },
+          { value: 'id', label: 'Default' },
           { value: 'email', label: 'Email' },
           { value: 'username', label: 'Username' },
           { value: 'role', label: 'Role' }
@@ -76,7 +76,6 @@ export default function Users() {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Email</th>
                   <th>Username</th>
                   <th>Role</th>
@@ -86,7 +85,6 @@ export default function Users() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.Id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/users/${user.Id}`)}>
-                    <td>{user.Id}</td>
                     <td>{user.Email}</td>
                     <td>{user.Username}</td>
                     <td>{user.Role}</td>

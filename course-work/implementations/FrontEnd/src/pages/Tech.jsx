@@ -62,7 +62,7 @@ export default function Tech() {
         onAscChange={setAsc}
         onSubmit={handleSubmit}
         sortOptions={[
-          { value: 'id', label: 'ID' },
+          { value: 'id', label: 'Default' },
           { value: 'name', label: 'Name' },
           { value: 'techCategory', label: 'Category' }
         ]}
@@ -75,7 +75,6 @@ export default function Tech() {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Name</th>
                   <th>Category</th>
                   {isAdmin && <th>Actions</th>}
@@ -84,7 +83,6 @@ export default function Tech() {
               <tbody>
                 {techs.map((tech) => (
                   <tr key={tech.id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/techs/${tech.id}`)}>
-                    <td>{tech.id}</td>
                     <td>{tech.name}</td>
                     <td>{tech.techCategory}</td>
                     {isAdmin && (
