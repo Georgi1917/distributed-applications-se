@@ -5,7 +5,6 @@ import RequireAuth from './components/RequireAuth.jsx';
 import Home from './pages/Home.jsx';
 import Companies from './pages/Companies.jsx';
 import JobListings from './pages/JobListings.jsx';
-import Users from './pages/Users.jsx';
 import Tech from './pages/Tech.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -46,7 +45,7 @@ export default function App() {
               <Route path="/job-listings/:id/edit" element={<RequireAuth adminOnly><JobListingEdit /></RequireAuth>} />
               <Route path="/job-listings/:id/delete" element={<RequireAuth adminOnly><JobListingDelete /></RequireAuth>} />
               <Route path="/jobs" element={<JobListings />} />
-              <Route path="/users" element={<Users />} />
+              <Route path="/users" element={<Companies />} />
               <Route path="/users/create" element={<RequireAuth adminOnly><UserCreate /></RequireAuth>} />
               <Route path="/users/:id" element={<UserDetail />} />
               <Route path="/users/:id/edit" element={<RequireAuth adminOnly><UserEdit /></RequireAuth>} />

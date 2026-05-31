@@ -17,9 +17,8 @@ export default function NavBar() {
       <div className="brand">Job Listing Portal</div>
       <nav>
         <NavLink to="/" className={activeClass}>Home</NavLink>
-        <NavLink to="/companies" className={activeClass}>Companies</NavLink>
+        <NavLink to="/companies" className={activeClass}>Companies And Users</NavLink>
         <NavLink to="/jobs" className={activeClass}>Job Listings</NavLink>
-        <NavLink to="/users" className={activeClass}>Users</NavLink>
         <NavLink to="/tech" className={activeClass}>Technologies</NavLink>
         {token ? (
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>

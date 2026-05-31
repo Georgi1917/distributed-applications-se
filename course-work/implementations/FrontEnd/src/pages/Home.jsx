@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 
 const cards = [
-  { title: 'Companies', description: 'Browse all companies in the system.', url: '/companies' },
+  { title: 'Companies And Users', description: 'Browse companies and registered users.', url: '/companies' },
   { title: 'Job Listings', description: 'View available job listings.', url: '/jobs' },
-  { title: 'Users', description: 'Inspect registered users.', url: '/users' },
   { title: 'Technologies', description: 'See technology categories and items.', url: '/tech' }
 ];
 
